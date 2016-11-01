@@ -21,7 +21,7 @@ class DeviceDetailPage: UIViewController {
     
     @IBOutlet weak var lastCheckedOutLabel: UILabel!
     
-    @IBOutlet weak var checkInButton: UIButton!
+    @IBOutlet weak var checkInOutButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,13 +33,13 @@ class DeviceDetailPage: UIViewController {
         if device.checkedOut == true {
             // if device is checked out then checkedOutBy and checkedOutDate are not nil
             lastCheckedOutLabel.text = "Last Checked Out: \(device.checkedOutBy) on \(device.checkedOutDate)"
-            // and Check In button should be hidden
-            checkInButton.isHidden = true
+            // and button should be Check In
+            checkInOutButton.titleLabel?.text = "Check In"
         } else {
             // if the device is available then hide the label
             lastCheckedOutLabel.isHidden = true
-            // and unhide the button
-            checkInButton.isHidden = false
+            // and button should be Check Out
+            checkInOutButton.titleLabel?.text = "Check Out"
         }
         // Do any additional setup after loading the view.
     }
@@ -49,8 +49,9 @@ class DeviceDetailPage: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func checkInDevice(_ sender: Any) {
+    @IBAction func checkInOutDevice(_ sender: Any) {
     }
+    
 
     /*
     // MARK: - Navigation

@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -58,8 +59,60 @@
                     <view key="view" contentMode="scaleToFill" id="ZQA-Z0-Xam">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iT0-qh-RJa">
+                                <rect key="frame" x="164" y="318" width="46" height="30"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="checkInOutDevice:" destination="PsC-Qe-Rhp" eventType="touchUpInside" id="QCu-KL-Omq"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="le2-wm-r9e">
+                                <rect key="frame" x="16" y="54" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4lT-Fq-rPv">
+                                <rect key="frame" x="16" y="116" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yRc-ln-bCW">
+                                <rect key="frame" x="16" y="177" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gqE-Rw-ALy">
+                                <rect key="frame" x="16" y="239" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="yRc-ln-bCW" firstAttribute="top" secondItem="4lT-Fq-rPv" secondAttribute="bottom" constant="40" id="4kO-Ix-p5M"/>
+                            <constraint firstItem="iT0-qh-RJa" firstAttribute="centerY" secondItem="ZQA-Z0-Xam" secondAttribute="centerY" id="6Q4-oH-dY5"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="4lT-Fq-rPv" secondAttribute="leading" id="6oY-et-FX3"/>
+                            <constraint firstItem="4lT-Fq-rPv" firstAttribute="top" secondItem="le2-wm-r9e" secondAttribute="bottom" constant="41" id="MNr-Xf-g2W"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="gqE-Rw-ALy" secondAttribute="leading" id="NS7-n6-6o7"/>
+                            <constraint firstItem="iT0-qh-RJa" firstAttribute="centerX" secondItem="ZQA-Z0-Xam" secondAttribute="centerX" id="ObW-V7-w4x"/>
+                            <constraint firstItem="iT0-qh-RJa" firstAttribute="top" secondItem="gqE-Rw-ALy" secondAttribute="bottom" constant="58" id="fla-mX-TAa"/>
+                            <constraint firstItem="gqE-Rw-ALy" firstAttribute="top" secondItem="yRc-ln-bCW" secondAttribute="bottom" constant="41" id="iOK-pF-ouS"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="le2-wm-r9e" secondAttribute="leading" id="rNt-pB-yuI"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="yRc-ln-bCW" secondAttribute="leading" id="rek-MG-0me"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="checkInOutButton" destination="iT0-qh-RJa" id="nLm-II-LUf"/>
+                        <outlet property="deviceLabel" destination="le2-wm-r9e" id="G8L-9R-N0n"/>
+                        <outlet property="lastCheckedOutLabel" destination="gqE-Rw-ALy" id="I79-a9-OUQ"/>
+                        <outlet property="manufacturerLabel" destination="yRc-ln-bCW" id="3Yb-zG-qYb"/>
+                        <outlet property="osLabel" destination="4lT-Fq-rPv" id="NG0-3d-Zat"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hdZ-nO-Guu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
