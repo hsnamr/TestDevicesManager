@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SchemeUserState</key>
+	<dict>
+		<key>DATAStack.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-JnJCCA.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-JnJCCATests.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>SYNCPropertyMapper.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Sync.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>3E4F4FEB7F2BCE318C58B518BF2AAF87</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6E61DA4F4AB8322FF5DB8B689975AFC9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>76967967EA49988882CA485460739467</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>934099C4E5895374974ADD454C322570</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9935446E7B56A873F23643C8D0E45C78</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>
