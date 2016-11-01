@@ -129,12 +129,47 @@
                     <view key="view" contentMode="scaleToFill" id="l8b-k1-QFn">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="OS" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xWi-2u-Rgy">
+                                <rect key="frame" x="16" y="89" width="343" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Manufacturer" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xMd-sE-8Y8">
+                                <rect key="frame" x="16" y="156" width="343" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Device" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YBz-nx-6gs">
+                                <rect key="frame" x="16" y="28" width="343" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="xMd-sE-8Y8" firstAttribute="centerX" secondItem="l8b-k1-QFn" secondAttribute="centerX" id="8qA-GC-MY3"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="YBz-nx-6gs" secondAttribute="leading" id="EuS-bi-m8V"/>
+                            <constraint firstItem="YBz-nx-6gs" firstAttribute="top" secondItem="K63-Xn-PkN" secondAttribute="bottom" constant="8" id="F6r-j6-LX8"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="YBz-nx-6gs" secondAttribute="trailing" id="NxC-b3-bh1"/>
+                            <constraint firstItem="xWi-2u-Rgy" firstAttribute="centerX" secondItem="l8b-k1-QFn" secondAttribute="centerX" id="TLW-WN-fAz"/>
+                            <constraint firstItem="xMd-sE-8Y8" firstAttribute="leading" secondItem="xWi-2u-Rgy" secondAttribute="leading" id="WVj-HO-JuB"/>
+                            <constraint firstItem="YBz-nx-6gs" firstAttribute="centerX" secondItem="l8b-k1-QFn" secondAttribute="centerX" id="qx7-OR-ane"/>
+                            <constraint firstItem="xWi-2u-Rgy" firstAttribute="leading" secondItem="YBz-nx-6gs" secondAttribute="leading" id="vDg-1O-jp0"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="deviceTextField" destination="YBz-nx-6gs" id="ESn-r8-gMu"/>
+                        <outlet property="manufacturerTextField" destination="xMd-sE-8Y8" id="brl-wu-cXp"/>
+                        <outlet property="osTextField" destination="xWi-2u-Rgy" id="1KG-Uq-l8a"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xp0-0g-nTU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2846" y="-26"/>
+            <point key="canvasLocation" x="2845.5999999999999" y="-26.53673163418291"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="CRK-GP-MJH">

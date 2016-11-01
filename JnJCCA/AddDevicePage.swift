@@ -9,7 +9,10 @@
 import UIKit
 
 class AddDevicePage: UIViewController {
-
+    @IBOutlet weak var deviceTextField: UITextField!
+    @IBOutlet weak var osTextField: UITextField!
+    @IBOutlet weak var manufacturerTextField: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
