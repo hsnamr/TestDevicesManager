@@ -8,12 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		75F0586E1DC954BF00A8C5C4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F0586D1DC954BF00A8C5C4 /* AppDelegate.swift */; };
-		75F058701DC954BF00A8C5C4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F0586F1DC954BF00A8C5C4 /* ViewController.swift */; };
 		75F058731DC954BF00A8C5C4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75F058711DC954BF00A8C5C4 /* Main.storyboard */; };
 		75F058761DC954BF00A8C5C4 /* JnJCCA.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 75F058741DC954BF00A8C5C4 /* JnJCCA.xcdatamodeld */; };
 		75F058781DC954BF00A8C5C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75F058771DC954BF00A8C5C4 /* Assets.xcassets */; };
 		75F0587B1DC954BF00A8C5C4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75F058791DC954BF00A8C5C4 /* LaunchScreen.storyboard */; };
 		75F058861DC954BF00A8C5C4 /* JnJCCATests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F058851DC954BF00A8C5C4 /* JnJCCATests.swift */; };
+		75F058911DC954E200A8C5C4 /* README in Resources */ = {isa = PBXBuildFile; fileRef = 75F058901DC954E200A8C5C4 /* README */; };
+		75F058991DC957DB00A8C5C4 /* Device+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F058971DC957DB00A8C5C4 /* Device+CoreDataClass.swift */; };
+		75F0589A1DC957DB00A8C5C4 /* Device+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F058971DC957DB00A8C5C4 /* Device+CoreDataClass.swift */; };
+		75F0589B1DC957DB00A8C5C4 /* Device+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F058981DC957DB00A8C5C4 /* Device+CoreDataProperties.swift */; };
+		75F0589C1DC957DB00A8C5C4 /* Device+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F058981DC957DB00A8C5C4 /* Device+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,7 +33,6 @@
 /* Begin PBXFileReference section */
 		75F0586A1DC954BF00A8C5C4 /* JnJCCA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JnJCCA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75F0586D1DC954BF00A8C5C4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		75F0586F1DC954BF00A8C5C4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		75F058721DC954BF00A8C5C4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		75F058751DC954BF00A8C5C4 /* JnJCCA.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = JnJCCA.xcdatamodel; sourceTree = "<group>"; };
 		75F058771DC954BF00A8C5C4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -38,6 +41,9 @@
 		75F058811DC954BF00A8C5C4 /* JnJCCATests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JnJCCATests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		75F058851DC954BF00A8C5C4 /* JnJCCATests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JnJCCATests.swift; sourceTree = "<group>"; };
 		75F058871DC954BF00A8C5C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		75F058901DC954E200A8C5C4 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		75F058971DC957DB00A8C5C4 /* Device+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Device+CoreDataClass.swift"; sourceTree = "<group>"; };
+		75F058981DC957DB00A8C5C4 /* Device+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Device+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,13 +85,14 @@
 		75F0586C1DC954BF00A8C5C4 /* JnJCCA */ = {
 			isa = PBXGroup;
 			children = (
+				75F058961DC9579500A8C5C4 /* ManagedObjects */,
 				75F0586D1DC954BF00A8C5C4 /* AppDelegate.swift */,
-				75F0586F1DC954BF00A8C5C4 /* ViewController.swift */,
 				75F058711DC954BF00A8C5C4 /* Main.storyboard */,
 				75F058771DC954BF00A8C5C4 /* Assets.xcassets */,
 				75F058791DC954BF00A8C5C4 /* LaunchScreen.storyboard */,
 				75F0587C1DC954BF00A8C5C4 /* Info.plist */,
 				75F058741DC954BF00A8C5C4 /* JnJCCA.xcdatamodeld */,
+				75F058901DC954E200A8C5C4 /* README */,
 			);
 			path = JnJCCA;
 			sourceTree = "<group>";
@@ -97,6 +104,15 @@
 				75F058871DC954BF00A8C5C4 /* Info.plist */,
 			);
 			path = JnJCCATests;
+			sourceTree = "<group>";
+		};
+		75F058961DC9579500A8C5C4 /* ManagedObjects */ = {
+			isa = PBXGroup;
+			children = (
+				75F058971DC957DB00A8C5C4 /* Device+CoreDataClass.swift */,
+				75F058981DC957DB00A8C5C4 /* Device+CoreDataProperties.swift */,
+			);
+			name = ManagedObjects;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -182,6 +198,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75F058911DC954E200A8C5C4 /* README in Resources */,
 				75F0587B1DC954BF00A8C5C4 /* LaunchScreen.storyboard in Resources */,
 				75F058781DC954BF00A8C5C4 /* Assets.xcassets in Resources */,
 				75F058731DC954BF00A8C5C4 /* Main.storyboard in Resources */,
@@ -202,7 +219,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				75F058701DC954BF00A8C5C4 /* ViewController.swift in Sources */,
+				75F058991DC957DB00A8C5C4 /* Device+CoreDataClass.swift in Sources */,
+				75F0589B1DC957DB00A8C5C4 /* Device+CoreDataProperties.swift in Sources */,
 				75F058761DC954BF00A8C5C4 /* JnJCCA.xcdatamodeld in Sources */,
 				75F0586E1DC954BF00A8C5C4 /* AppDelegate.swift in Sources */,
 			);
@@ -213,6 +231,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				75F058861DC954BF00A8C5C4 /* JnJCCATests.swift in Sources */,
+				75F0589C1DC957DB00A8C5C4 /* Device+CoreDataProperties.swift in Sources */,
+				75F0589A1DC957DB00A8C5C4 /* Device+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
