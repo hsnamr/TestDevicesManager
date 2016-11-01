@@ -2,7 +2,7 @@
 //  JnJCCATests.swift
 //  JnJCCATests
 //
-//  Created by BoschCIBDM on 11/1/16.
+//  Created by Hussian Ali Al-Amri on 11/1/16.
 //  Copyright © 2016 IM. All rights reserved.
 //
 
