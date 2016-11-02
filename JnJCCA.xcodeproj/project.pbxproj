@@ -12,8 +12,6 @@
 		75F058761DC954BF00A8C5C4 /* JnJCCA.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 75F058741DC954BF00A8C5C4 /* JnJCCA.xcdatamodeld */; };
 		75F058781DC954BF00A8C5C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75F058771DC954BF00A8C5C4 /* Assets.xcassets */; };
 		75F0587B1DC954BF00A8C5C4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75F058791DC954BF00A8C5C4 /* LaunchScreen.storyboard */; };
-		75F058991DC957DB00A8C5C4 /* Device+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F058971DC957DB00A8C5C4 /* Device+CoreDataClass.swift */; };
-		75F0589B1DC957DB00A8C5C4 /* Device+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F058981DC957DB00A8C5C4 /* Device+CoreDataProperties.swift */; };
 		75F058A01DC95B6800A8C5C4 /* DeviceDetailPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F0589E1DC95B6800A8C5C4 /* DeviceDetailPage.swift */; };
 		75F058A11DC95B6800A8C5C4 /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F0589F1DC95B6800A8C5C4 /* HomePage.swift */; };
 		75F058A31DC95B9300A8C5C4 /* AddDevicePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F058A21DC95B9300A8C5C4 /* AddDevicePage.swift */; };
@@ -30,8 +28,6 @@
 		75F058771DC954BF00A8C5C4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		75F0587A1DC954BF00A8C5C4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		75F0587C1DC954BF00A8C5C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		75F058971DC957DB00A8C5C4 /* Device+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Device+CoreDataClass.swift"; sourceTree = "<group>"; };
-		75F058981DC957DB00A8C5C4 /* Device+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Device+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		75F0589E1DC95B6800A8C5C4 /* DeviceDetailPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceDetailPage.swift; sourceTree = "<group>"; };
 		75F0589F1DC95B6800A8C5C4 /* HomePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePage.swift; sourceTree = "<group>"; };
 		75F058A21DC95B9300A8C5C4 /* AddDevicePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDevicePage.swift; sourceTree = "<group>"; };
@@ -72,7 +68,6 @@
 			isa = PBXGroup;
 			children = (
 				75F0589D1DC95B3F00A8C5C4 /* Screens */,
-				75F058961DC9579500A8C5C4 /* ManagedObjects */,
 				75F0586D1DC954BF00A8C5C4 /* AppDelegate.swift */,
 				75F058711DC954BF00A8C5C4 /* Main.storyboard */,
 				75F058771DC954BF00A8C5C4 /* Assets.xcassets */,
@@ -81,15 +76,6 @@
 				75F058741DC954BF00A8C5C4 /* JnJCCA.xcdatamodeld */,
 			);
 			path = JnJCCA;
-			sourceTree = "<group>";
-		};
-		75F058961DC9579500A8C5C4 /* ManagedObjects */ = {
-			isa = PBXGroup;
-			children = (
-				75F058971DC957DB00A8C5C4 /* Device+CoreDataClass.swift */,
-				75F058981DC957DB00A8C5C4 /* Device+CoreDataProperties.swift */,
-			);
-			name = ManagedObjects;
 			sourceTree = "<group>";
 		};
 		75F0589D1DC95B3F00A8C5C4 /* Screens */ = {
@@ -243,9 +229,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75F058A31DC95B9300A8C5C4 /* AddDevicePage.swift in Sources */,
-				75F058991DC957DB00A8C5C4 /* Device+CoreDataClass.swift in Sources */,
 				75F058A11DC95B6800A8C5C4 /* HomePage.swift in Sources */,
-				75F0589B1DC957DB00A8C5C4 /* Device+CoreDataProperties.swift in Sources */,
 				75F058A01DC95B6800A8C5C4 /* DeviceDetailPage.swift in Sources */,
 				75F058761DC954BF00A8C5C4 /* JnJCCA.xcdatamodeld in Sources */,
 				75F0586E1DC954BF00A8C5C4 /* AppDelegate.swift in Sources */,

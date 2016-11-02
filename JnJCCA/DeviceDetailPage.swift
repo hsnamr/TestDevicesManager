@@ -11,7 +11,12 @@ import UIKit
 class DeviceDetailPage: UIViewController {
     
     // if we got this far, device cannot be nil
-    public var device:Any!  // Any for now
+    public var name:String!
+    public var os:String!
+    public var manufacturer:String!
+    public var isCheckedOut:Bool!
+    public var lastCheckedOutBy:String?
+    public var lastCheckedOutDate:Date?
 
     @IBOutlet weak var deviceLabel: UILabel!
     
@@ -27,12 +32,12 @@ class DeviceDetailPage: UIViewController {
         super.viewDidLoad()
 
         // setup the labels
-        deviceLabel.text = "Device: \(device.name)"
-        osLabel.text = "OS: \(device.operatingSystem)"
-        manufacturerLabel.text = "Manufacturer: \(device.manufacturer)"
-        if device.checkedOut == true {
+        deviceLabel.text = "Device: \(name)"
+        osLabel.text = "OS: \(os)"
+        manufacturerLabel.text = "Manufacturer: \(manufacturer)"
+        if isCheckedOut == true {
             // if device is checked out then checkedOutBy and checkedOutDate are not nil
-            lastCheckedOutLabel.text = "Last Checked Out: \(device.checkedOutBy) on \(device.checkedOutDate)"
+            lastCheckedOutLabel.text = "Last Checked Out: \(lastCheckedOutBy) on \(lastCheckedOutDate)"
             // and button should be Check In
             checkInOutButton.titleLabel?.text = "Check In"
         } else {

@@ -7,26 +7,14 @@
 //
 
 import UIKit
-import DATAStack
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
-    var dataStack: DATAStack = {
-        let dataStack = DATAStack(modelName: "JnJCCA")
-        
-        return dataStack
-    }()
-    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        if let window = self.window {
-            let homePage = HomePage(dataStack: self.dataStack)
-            window.rootViewController = UINavigationController(rootViewController: homePage)
-            window.makeKeyAndVisible()
-        }
-        
+        // Override point for customization after application launch.
         return true
     }
 

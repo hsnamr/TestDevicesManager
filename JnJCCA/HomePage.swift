@@ -13,13 +13,13 @@ import DATASource
 class HomePage: UITableViewController {
     
     var listOfDevices:[Any]?    // Any for now
-    var dataStack:DATAStack
+    let dataStack = DATAStack(modelName: "JnJCCA")
 
     lazy var dataSource: DATASource = {
-        let request: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+        let request: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Device")
         request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         
-        let dataSource = DATASource(tableView: self.tableView, cellIdentifier: "Cell", fetchRequest: request, mainContext: self.dataStack.mainContext, configuration: { cell, item, indexPath in
+        let dataSource = DATASource(tableView: self.tableView, cellIdentifier: "cellForDevice", fetchRequest: request, mainContext: self.dataStack.mainContext, configuration: { cell, item, indexPath in
             if let name = item.value(forKey: "name") as? String, let createdDate = item.value(forKey: "createdDate") as? NSDate {
                 cell.textLabel?.text =  name + " - " + createdDate.description
             }
@@ -28,18 +28,11 @@ class HomePage: UITableViewController {
         return dataSource
     }()
     
-    init(dataStack: DATAStack) {
-        self.dataStack = dataStack
-        
-        super.init(style: .plain)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellForDevice")
+        self.tableView.dataSource = self.dataSource
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -73,14 +66,6 @@ class HomePage: UITableViewController {
         return cell
     }
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
@@ -93,31 +78,21 @@ class HomePage: UITableViewController {
         }    
     }
 
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        if segue.identifier == "showDetail" {
+        if segue.identifier == "showDeviceDetail" {
             let deviceDetailPage = segue.destination as! DeviceDetailPage
-            if let selectedDevice = listOfDevices?[(tableView.indexPathForSelectedRow?.row)!] {
-                deviceDetailPage.device = selectedDevice
+            if let selectedDevice = self.dataSource.objectAtIndexPath(tableView.indexPathForSelectedRow!) {
+                deviceDetailPage.name = selectedDevice.value(forKey: "name") as! String!
+                deviceDetailPage.manufacturer = selectedDevice.value(forKey: "manufacturer") as! String!
+                deviceDetailPage.os = selectedDevice.value(forKey: "os") as! String!
+                deviceDetailPage.isCheckedOut = selectedDevice.value(forKey: "isCheckedOut") as! Bool!
+                deviceDetailPage.lastCheckedOutBy = selectedDevice.value(forKey: "lastCheckedOutBy") as! String?
+                deviceDetailPage.lastCheckedOutDate = selectedDevice.value(forKey: "lastCheckedOutDate") as! Date?
             }
         }
     }
