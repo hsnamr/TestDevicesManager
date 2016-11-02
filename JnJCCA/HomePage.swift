@@ -34,6 +34,8 @@ class HomePage: UITableViewController {
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellForDevice")
         self.tableView.dataSource = self.dataSource
         
+        WebService.shared.getDevices()
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
