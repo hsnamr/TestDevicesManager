@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AddDevicePage: UIViewController {
+class AddDevicePage: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var deviceTextField: UITextField!
     @IBOutlet weak var osTextField: UITextField!
     @IBOutlet weak var manufacturerTextField: UITextField!
@@ -17,7 +17,10 @@ class AddDevicePage: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        // set the delegate for the textfield to implement the return functionality
+        self.deviceTextField.delegate = self
+        self.osTextField.delegate = self
+        self.manufacturerTextField.delegate = self
     }
     
     override func viewDidLayoutSubviews() {
@@ -30,6 +33,17 @@ class AddDevicePage: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == deviceTextField {
+            osTextField.becomeFirstResponder()
+        } else if textField == osTextField {
+            manufacturerTextField.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+        }
+        return true
     }
     
 
@@ -46,9 +60,7 @@ class AddDevicePage: UIViewController {
             print("Warning: All fields are mandatory")
         } else {
             dismiss(animated: true, completion: {
-                // pass data to Core Data
-                // and then from Core Data to
-                // the web service
+                // pass data to Core Data and then from Core Data to the web service
             })
         }
     }

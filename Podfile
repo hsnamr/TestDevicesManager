@@ -9,5 +9,7 @@ target 'JnJCCA' do
     pod 'Sync', '~> 2'
     pod 'DATAStack', '~> 6'
     pod 'DATASource', '~> 6'
+    pod 'SwiftyJSON'
+    pod 'Alamofire', '~> 4.0'
 
 end

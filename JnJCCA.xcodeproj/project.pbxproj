@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		756EDCCF1DC97CED00D6BB98 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756EDCCE1DC97CED00D6BB98 /* WebService.swift */; };
 		75F0586E1DC954BF00A8C5C4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F0586D1DC954BF00A8C5C4 /* AppDelegate.swift */; };
 		75F058731DC954BF00A8C5C4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75F058711DC954BF00A8C5C4 /* Main.storyboard */; };
 		75F058761DC954BF00A8C5C4 /* JnJCCA.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 75F058741DC954BF00A8C5C4 /* JnJCCA.xcdatamodeld */; };
@@ -21,6 +22,7 @@
 /* Begin PBXFileReference section */
 		1060AE999B6975E6289648BC /* Pods-JnJCCA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JnJCCA.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JnJCCA/Pods-JnJCCA.debug.xcconfig"; sourceTree = "<group>"; };
 		30EC6EE538E585CBB46D22AC /* Pods-JnJCCA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JnJCCA.release.xcconfig"; path = "Pods/Target Support Files/Pods-JnJCCA/Pods-JnJCCA.release.xcconfig"; sourceTree = "<group>"; };
+		756EDCCE1DC97CED00D6BB98 /* WebService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 		75F0586A1DC954BF00A8C5C4 /* JnJCCA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JnJCCA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75F0586D1DC954BF00A8C5C4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		75F058721DC954BF00A8C5C4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -46,6 +48,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		756EDCCD1DC97CD200D6BB98 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				756EDCCE1DC97CED00D6BB98 /* WebService.swift */,
+			);
+			name = Services;
+			sourceTree = "<group>";
+		};
 		75F058611DC954BF00A8C5C4 = {
 			isa = PBXGroup;
 			children = (
@@ -67,6 +77,7 @@
 		75F0586C1DC954BF00A8C5C4 /* JnJCCA */ = {
 			isa = PBXGroup;
 			children = (
+				756EDCCD1DC97CD200D6BB98 /* Services */,
 				75F0589D1DC95B3F00A8C5C4 /* Screens */,
 				75F0586D1DC954BF00A8C5C4 /* AppDelegate.swift */,
 				75F058711DC954BF00A8C5C4 /* Main.storyboard */,
@@ -228,6 +239,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				756EDCCF1DC97CED00D6BB98 /* WebService.swift in Sources */,
 				75F058A31DC95B9300A8C5C4 /* AddDevicePage.swift in Sources */,
 				75F058A11DC95B6800A8C5C4 /* HomePage.swift in Sources */,
 				75F058A01DC95B6800A8C5C4 /* DeviceDetailPage.swift in Sources */,

@@ -12,8 +12,8 @@ import DATASource
 
 class HomePage: UITableViewController {
     
-    var listOfDevices:[Any]?    // Any for now
-    let dataStack = DATAStack(modelName: "JnJCCA")
+    var listOfDevices:[Device]?
+    public let dataStack = DATAStack(modelName: "JnJCCA")
 
     lazy var dataSource: DATASource = {
         let request: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Device")
@@ -69,13 +69,12 @@ class HomePage: UITableViewController {
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            // To-Do: Add warning dialogue before committing deletion
+            print("Warning: Are you sure you want to delete this device?")
             // Delete the row from the data source
             tableView.deleteRows(at: [indexPath], with: .fade)
-            // To-Do: Add warning dialogue before committing deletion
             
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        }
     }
 
     // MARK: - Navigation
@@ -96,5 +95,11 @@ class HomePage: UITableViewController {
             }
         }
     }
+}
 
+extension HomePage: DATASourceDelegate {
+    
+    func dataSource(_ dataSource: DATASource, configureTableViewCell cell: UITableViewCell, withItem item: NSManagedObject, atIndexPath indexPath: IndexPath) {
+        cell.textLabel?.text = item.value(forKey: "name") as? String ?? ""
+    }
 }
