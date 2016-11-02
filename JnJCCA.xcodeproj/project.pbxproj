@@ -7,38 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3F549C2BF898D92175FE7321 /* Pods_JnJCCATests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DCA2338C6B39CF54E59F80A /* Pods_JnJCCATests.framework */; };
 		75F0586E1DC954BF00A8C5C4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F0586D1DC954BF00A8C5C4 /* AppDelegate.swift */; };
 		75F058731DC954BF00A8C5C4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75F058711DC954BF00A8C5C4 /* Main.storyboard */; };
 		75F058761DC954BF00A8C5C4 /* JnJCCA.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 75F058741DC954BF00A8C5C4 /* JnJCCA.xcdatamodeld */; };
 		75F058781DC954BF00A8C5C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75F058771DC954BF00A8C5C4 /* Assets.xcassets */; };
 		75F0587B1DC954BF00A8C5C4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75F058791DC954BF00A8C5C4 /* LaunchScreen.storyboard */; };
-		75F058861DC954BF00A8C5C4 /* JnJCCATests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F058851DC954BF00A8C5C4 /* JnJCCATests.swift */; };
 		75F058991DC957DB00A8C5C4 /* Device+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F058971DC957DB00A8C5C4 /* Device+CoreDataClass.swift */; };
-		75F0589A1DC957DB00A8C5C4 /* Device+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F058971DC957DB00A8C5C4 /* Device+CoreDataClass.swift */; };
 		75F0589B1DC957DB00A8C5C4 /* Device+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F058981DC957DB00A8C5C4 /* Device+CoreDataProperties.swift */; };
-		75F0589C1DC957DB00A8C5C4 /* Device+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F058981DC957DB00A8C5C4 /* Device+CoreDataProperties.swift */; };
 		75F058A01DC95B6800A8C5C4 /* DeviceDetailPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F0589E1DC95B6800A8C5C4 /* DeviceDetailPage.swift */; };
 		75F058A11DC95B6800A8C5C4 /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F0589F1DC95B6800A8C5C4 /* HomePage.swift */; };
 		75F058A31DC95B9300A8C5C4 /* AddDevicePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F058A21DC95B9300A8C5C4 /* AddDevicePage.swift */; };
 		A37CDBE6DFCABB98AC70886E /* Pods_JnJCCA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB7A233C8C8126B551E251D2 /* Pods_JnJCCA.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		75F058821DC954BF00A8C5C4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 75F058621DC954BF00A8C5C4 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 75F058691DC954BF00A8C5C4;
-			remoteInfo = JnJCCA;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		1060AE999B6975E6289648BC /* Pods-JnJCCA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JnJCCA.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JnJCCA/Pods-JnJCCA.debug.xcconfig"; sourceTree = "<group>"; };
 		30EC6EE538E585CBB46D22AC /* Pods-JnJCCA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JnJCCA.release.xcconfig"; path = "Pods/Target Support Files/Pods-JnJCCA/Pods-JnJCCA.release.xcconfig"; sourceTree = "<group>"; };
-		61107CFFCCE78B5AEF7EF088 /* Pods-JnJCCATests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JnJCCATests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JnJCCATests/Pods-JnJCCATests.debug.xcconfig"; sourceTree = "<group>"; };
-		6DCA2338C6B39CF54E59F80A /* Pods_JnJCCATests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JnJCCATests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		75F0586A1DC954BF00A8C5C4 /* JnJCCA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JnJCCA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75F0586D1DC954BF00A8C5C4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		75F058721DC954BF00A8C5C4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -46,16 +30,12 @@
 		75F058771DC954BF00A8C5C4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		75F0587A1DC954BF00A8C5C4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		75F0587C1DC954BF00A8C5C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		75F058811DC954BF00A8C5C4 /* JnJCCATests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JnJCCATests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		75F058851DC954BF00A8C5C4 /* JnJCCATests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JnJCCATests.swift; sourceTree = "<group>"; };
-		75F058871DC954BF00A8C5C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		75F058971DC957DB00A8C5C4 /* Device+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Device+CoreDataClass.swift"; sourceTree = "<group>"; };
 		75F058981DC957DB00A8C5C4 /* Device+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Device+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		75F0589E1DC95B6800A8C5C4 /* DeviceDetailPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceDetailPage.swift; sourceTree = "<group>"; };
 		75F0589F1DC95B6800A8C5C4 /* HomePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePage.swift; sourceTree = "<group>"; };
 		75F058A21DC95B9300A8C5C4 /* AddDevicePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDevicePage.swift; sourceTree = "<group>"; };
 		BB7A233C8C8126B551E251D2 /* Pods_JnJCCA.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JnJCCA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D8EC384F672A611DC552311F /* Pods-JnJCCATests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JnJCCATests.release.xcconfig"; path = "Pods/Target Support Files/Pods-JnJCCATests/Pods-JnJCCATests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,14 +47,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		75F0587E1DC954BF00A8C5C4 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				3F549C2BF898D92175FE7321 /* Pods_JnJCCATests.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -82,7 +54,6 @@
 			isa = PBXGroup;
 			children = (
 				75F0586C1DC954BF00A8C5C4 /* JnJCCA */,
-				75F058841DC954BF00A8C5C4 /* JnJCCATests */,
 				75F0586B1DC954BF00A8C5C4 /* Products */,
 				9F71D46ACA41BD28997F0CF4 /* Pods */,
 				B300741CA8CD81CC093E52E6 /* Frameworks */,
@@ -93,7 +64,6 @@
 			isa = PBXGroup;
 			children = (
 				75F0586A1DC954BF00A8C5C4 /* JnJCCA.app */,
-				75F058811DC954BF00A8C5C4 /* JnJCCATests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -111,15 +81,6 @@
 				75F058741DC954BF00A8C5C4 /* JnJCCA.xcdatamodeld */,
 			);
 			path = JnJCCA;
-			sourceTree = "<group>";
-		};
-		75F058841DC954BF00A8C5C4 /* JnJCCATests */ = {
-			isa = PBXGroup;
-			children = (
-				75F058851DC954BF00A8C5C4 /* JnJCCATests.swift */,
-				75F058871DC954BF00A8C5C4 /* Info.plist */,
-			);
-			path = JnJCCATests;
 			sourceTree = "<group>";
 		};
 		75F058961DC9579500A8C5C4 /* ManagedObjects */ = {
@@ -146,8 +107,6 @@
 			children = (
 				1060AE999B6975E6289648BC /* Pods-JnJCCA.debug.xcconfig */,
 				30EC6EE538E585CBB46D22AC /* Pods-JnJCCA.release.xcconfig */,
-				61107CFFCCE78B5AEF7EF088 /* Pods-JnJCCATests.debug.xcconfig */,
-				D8EC384F672A611DC552311F /* Pods-JnJCCATests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -156,7 +115,6 @@
 			isa = PBXGroup;
 			children = (
 				BB7A233C8C8126B551E251D2 /* Pods_JnJCCA.framework */,
-				6DCA2338C6B39CF54E59F80A /* Pods_JnJCCATests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -184,27 +142,6 @@
 			productReference = 75F0586A1DC954BF00A8C5C4 /* JnJCCA.app */;
 			productType = "com.apple.product-type.application";
 		};
-		75F058801DC954BF00A8C5C4 /* JnJCCATests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 75F0588D1DC954BF00A8C5C4 /* Build configuration list for PBXNativeTarget "JnJCCATests" */;
-			buildPhases = (
-				DE2D6DBBF6CB786397A40E5D /* [CP] Check Pods Manifest.lock */,
-				75F0587D1DC954BF00A8C5C4 /* Sources */,
-				75F0587E1DC954BF00A8C5C4 /* Frameworks */,
-				75F0587F1DC954BF00A8C5C4 /* Resources */,
-				13886B4E0D192671420CAAB2 /* [CP] Embed Pods Frameworks */,
-				0673076D5AD20FBF6CF66063 /* [CP] Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				75F058831DC954BF00A8C5C4 /* PBXTargetDependency */,
-			);
-			name = JnJCCATests;
-			productName = JnJCCATests;
-			productReference = 75F058811DC954BF00A8C5C4 /* JnJCCATests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -218,11 +155,6 @@
 					75F058691DC954BF00A8C5C4 = {
 						CreatedOnToolsVersion = 8.1;
 						ProvisioningStyle = Automatic;
-					};
-					75F058801DC954BF00A8C5C4 = {
-						CreatedOnToolsVersion = 8.1;
-						ProvisioningStyle = Automatic;
-						TestTargetID = 75F058691DC954BF00A8C5C4;
 					};
 				};
 			};
@@ -240,7 +172,6 @@
 			projectRoot = "";
 			targets = (
 				75F058691DC954BF00A8C5C4 /* JnJCCA */,
-				75F058801DC954BF00A8C5C4 /* JnJCCATests */,
 			);
 		};
 /* End PBXProject section */
@@ -256,31 +187,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		75F0587F1DC954BF00A8C5C4 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0673076D5AD20FBF6CF66063 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JnJCCATests/Pods-JnJCCATests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		0DE764E8E30810F1E5B73A6B /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -294,21 +203,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JnJCCA/Pods-JnJCCA-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		13886B4E0D192671420CAAB2 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JnJCCATests/Pods-JnJCCATests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		942BFC582F194E500A15DF6E /* [CP] Embed Pods Frameworks */ = {
@@ -341,21 +235,6 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		DE2D6DBBF6CB786397A40E5D /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -373,25 +252,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		75F0587D1DC954BF00A8C5C4 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				75F058861DC954BF00A8C5C4 /* JnJCCATests.swift in Sources */,
-				75F0589C1DC957DB00A8C5C4 /* Device+CoreDataProperties.swift in Sources */,
-				75F0589A1DC957DB00A8C5C4 /* Device+CoreDataClass.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		75F058831DC954BF00A8C5C4 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 75F058691DC954BF00A8C5C4 /* JnJCCA */;
-			targetProxy = 75F058821DC954BF00A8C5C4 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		75F058711DC954BF00A8C5C4 /* Main.storyboard */ = {
@@ -532,36 +393,6 @@
 			};
 			name = Release;
 		};
-		75F0588E1DC954BF00A8C5C4 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 61107CFFCCE78B5AEF7EF088 /* Pods-JnJCCATests.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = JnJCCATests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = IM.JnJCCATests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JnJCCA.app/JnJCCA";
-			};
-			name = Debug;
-		};
-		75F0588F1DC954BF00A8C5C4 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = D8EC384F672A611DC552311F /* Pods-JnJCCATests.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = JnJCCATests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = IM.JnJCCATests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JnJCCA.app/JnJCCA";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -579,15 +410,6 @@
 			buildConfigurations = (
 				75F0588B1DC954BF00A8C5C4 /* Debug */,
 				75F0588C1DC954BF00A8C5C4 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		75F0588D1DC954BF00A8C5C4 /* Build configuration list for PBXNativeTarget "JnJCCATests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				75F0588E1DC954BF00A8C5C4 /* Debug */,
-				75F0588F1DC954BF00A8C5C4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

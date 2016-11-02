@@ -8,10 +8,6 @@ target 'JnJCCA' do
   # Pods for JnJCCA
     pod 'Sync', '~> 2'
     pod 'DATAStack', '~> 6'
-
-  target 'JnJCCATests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
+    pod 'DATASource', '~> 6'
 
 end
