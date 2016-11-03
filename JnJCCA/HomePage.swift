@@ -14,14 +14,13 @@ class HomePage: UITableViewController {
     
     var listOfDevices:[Device]?
     let dataStack = DATAStack(modelName: "JnJCCA")
-    
     var dataSource:DATASource!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellForDevice")
-        
+        self.tableView.allowsSelectionDuringEditing = false
         refresh()
         
         WebService.shared.getDevices()
@@ -47,41 +46,46 @@ class HomePage: UITableViewController {
         })
         
         self.tableView.dataSource = dataSource
+        self.tableView.reloadData()
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "showDeviceDetail", sender: self)
     }
-
-    // MARK: - Table view data source
-
-//    override func numberOfSections(in tableView: UITableView) -> Int {
-//        // #warning Incomplete implementation, return the number of sections
-//        return 1
-//    }
-//
-//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        // return the count of listOfDevices or 0 if array is nil
-//        return listOfDevices?.count ?? 0
-//    }
-//
-//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "cellForDevice", for: indexPath)
-//
-//        // Configure the cell...
-//
-//        return cell
-//    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
 
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // To-Do: Add warning dialogue before committing deletion
-            print("Warning: Are you sure you want to delete this device?")
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            
+            if let selectedDevice = self.dataSource.objectAtIndexPath(self.tableView.indexPathForSelectedRow!) as? Device {
+                PersistenceService.shared.deleteDevice(id: selectedDevice.objectID)
+                alert(title: "Warning", message: "Are you sure you want to delete \(selectedDevice.name)?", action1: "Delete", action2: "No")
+            }
+//            tableView.deleteRows(at: [indexPath], with: .fade)
         }
+    }
+    
+    func alert(title:String, message:String, action1: String?, action2: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        if let _ = action1 {
+            alert.addAction(UIAlertAction(title: action1!, style: .cancel, handler: { (_) in
+                // Delete the row from the data source
+                if let selectedDevice = self.dataSource.objectAtIndexPath(self.tableView.indexPathForSelectedRow!) as? Device {
+                    PersistenceService.shared.deleteDevice(id: selectedDevice.objectID)
+                }
+            }))
+        }
+        
+        alert.addAction(UIAlertAction(title: action2, style: .default, handler: { (_) in
+            return
+        }))
+        
+        present(alert, animated: true, completion: nil)
     }
 
     // MARK: - Navigation

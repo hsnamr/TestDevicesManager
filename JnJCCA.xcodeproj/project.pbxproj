@@ -154,6 +154,7 @@
 				TargetAttributes = {
 					75F058691DC954BF00A8C5C4 = {
 						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = CJAR3427EB;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -372,6 +373,7 @@
 			baseConfigurationReference = 1060AE999B6975E6289648BC /* Pods-JnJCCA.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = CJAR3427EB;
 				INFOPLIST_FILE = JnJCCA/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = IM.JnJCCA;
@@ -385,6 +387,7 @@
 			baseConfigurationReference = 30EC6EE538E585CBB46D22AC /* Pods-JnJCCA.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = CJAR3427EB;
 				INFOPLIST_FILE = JnJCCA/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = IM.JnJCCA;

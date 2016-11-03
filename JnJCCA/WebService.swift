@@ -13,9 +13,7 @@ class WebService {
     let baseURL = "http://private-1cc0f-devicecheckout.apiary-mock.com"
     
     public static let shared = WebService()
-    
     private init() {}
-    
     
     // get devices
     func getDevices() {

@@ -36,11 +36,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JnJCCA/PersistenceService.swift"
-            timestampString = "499832234.003035"
+            timestampString = "499838853.92617"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "41"
-            endingLineNumber = "41"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
             landmarkName = "updateDevice(id:isCheckedOut:lastCheckedOutBy:lastCheckedOutDate:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -52,12 +52,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JnJCCA/DeviceDetailPage.swift"
-            timestampString = "499835388.261761"
+            timestampString = "499838853.92617"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "99"
-            endingLineNumber = "99"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
             landmarkName = "alert(title:message:action1:action2:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JnJCCA/HomePage.swift"
+            timestampString = "499839018.15841"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
+            landmarkName = "tableView(_:commit:forRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

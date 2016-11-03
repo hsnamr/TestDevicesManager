@@ -14,13 +14,9 @@ class DeviceDetailPage: UIViewController {
     public var device:Device!
 
     @IBOutlet weak var deviceLabel: UILabel!
-    
     @IBOutlet weak var osLabel: UILabel!
-    
     @IBOutlet weak var manufacturerLabel: UILabel!
-    
     @IBOutlet weak var lastCheckedOutLabel: UILabel!
-    
     @IBOutlet weak var checkInOutButton: UIButton!
     
     override func viewDidLoad() {
@@ -42,11 +38,10 @@ class DeviceDetailPage: UIViewController {
             checkInOutButton.setTitle("Check In", for: .normal)
         } else if device.isCheckedOut == false {
             if let _ = device.lastCheckedOutDate {
-                lastCheckedOutLabel.isHidden = false
                 lastCheckedOutLabel.text = "Last Checked Out: \(device.lastCheckedOutBy!) on \(device.lastCheckedOutDate!)"
             } else {
                 // the device might have never been checked out before
-                lastCheckedOutLabel.isHidden = true
+                lastCheckedOutLabel.text = ""
             }
             // if the device is available then button should be Check Out
             checkInOutButton.setTitle("Check Out", for: .normal)
@@ -85,11 +80,8 @@ class DeviceDetailPage: UIViewController {
             return
         }))
         alert.addAction(UIAlertAction(title: action2, style: .default, handler:{ (UIAlertAction) in
-//            print("Checking out device: \(self.device.name)")
             self.device.lastCheckedOutBy = checkedOutByTextField.text
-//            print("Checked out by: \(self.device.lastCheckedOutBy)")
             self.device.lastCheckedOutDate = Date.init(timeIntervalSinceNow: 0) as NSDate?
-//            print("Checked out date: \(self.device.lastCheckedOutDate)")
             
             // the device is being checked out, isCheckedOut must be true, else fail
             assert(self.device.isCheckedOut == true)
@@ -101,15 +93,4 @@ class DeviceDetailPage: UIViewController {
         }))
         self.present(alert, animated: true, completion: nil)
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

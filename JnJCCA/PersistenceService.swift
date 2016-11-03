@@ -12,6 +12,7 @@ import DATASource
 
 class PersistenceService {
     public static let shared = PersistenceService()
+    private init() {}
     
     let dataStack = DATAStack(modelName: "JnJCCA")
     
@@ -59,5 +60,10 @@ class PersistenceService {
             return device
         }
         return nil
+    }
+    
+    func deleteDevice(id: NSManagedObjectID) {
+        let object = self.dataStack.mainContext.object(with: id)
+        self.dataStack.mainContext.delete(object)
     }
 }
