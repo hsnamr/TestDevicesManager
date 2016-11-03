@@ -17,13 +17,12 @@ class HomePage: UITableViewController {
 
     lazy var dataSource: DATASource = {
         let request: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Device")
-        request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        request.sortDescriptors = [
+            NSSortDescriptor(key: "name", ascending: true),
+        ]
         
-        let dataSource = DATASource(tableView: self.tableView, cellIdentifier: "cellForDevice", fetchRequest: request, mainContext: self.dataStack.mainContext, configuration: { cell, item, indexPath in
-            if let name = item.value(forKey: "name") as? String, let os = item.value(forKey: "os") as? String {
-                cell.textLabel?.text =  name + " - " + os
-            }
-        })
+        let dataSource = DATASource(tableView: self.tableView, cellIdentifier: "cellForDevice", fetchRequest: request, mainContext: self.dataStack.mainContext)
+        dataSource.delegate = self
         
         return dataSource
     }()
@@ -49,8 +48,14 @@ class HomePage: UITableViewController {
     }
     
     func refresh() {
-        tableView.dataSource = self.dataSource
+        self.dataStack.mainContext.refreshAllObjects()
+        
+        tableView.dataSource = dataSource
         tableView.reloadData()
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "showDeviceDetail", sender: self)
     }
 
     // MARK: - Table view data source

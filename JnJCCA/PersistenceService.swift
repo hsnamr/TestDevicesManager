@@ -35,7 +35,7 @@ class PersistenceService {
         try! self.dataStack.mainContext.save()
     }
     
-    func updateDevice(id: Int16, isCheckedOut: Bool, lastCheckedOutBy: String?, lastCheckedOutDate: Date?) {
+    func updateDevice(id: NSManagedObjectID, isCheckedOut: Bool, lastCheckedOutBy: String?, lastCheckedOutDate: Date?) {
         if isCheckedOut == true {
             if let object = fetchDevice(id: id) {
                 object.setValue(isCheckedOut, forKey: "isCheckedOut")
@@ -51,25 +51,12 @@ class PersistenceService {
         }
     }
     
-    func fetchDevice(id: Int16) -> Device? {
+    func fetchDevice(id: NSManagedObjectID) -> Device? {
+        let object = self.dataStack.mainContext.object(with: id)
         
-        // Define fetch request/predicate/sort descriptors
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Device")
-        let sortDescriptor = NSSortDescriptor(key: "id", ascending: true)
-        let predicate = NSPredicate(format: "id == \(id)", argumentArray: nil)
-        
-        // Assign fetch request properties
-        fetchRequest.predicate = predicate
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        fetchRequest.fetchBatchSize = 1
-        fetchRequest.fetchLimit = 1
-        
-        // Handle results
-        let fetchedResult = try! self.dataStack.mainContext.fetch(fetchRequest)
-        
-        if let fetchedDevice: Device = fetchedResult[0] as? Device {
-            print("Fetched device with ID = \(id). The name of this device is '\(fetchedDevice.name)'")
-            return fetchedDevice
+        if let device: Device = object as? Device {
+            print("Fetched device with ID = \(id). The name of this device is '\(device.name)'")
+            return device
         }
         return nil
     }
