@@ -13,15 +13,15 @@ import DATASource
 class HomePage: UITableViewController {
     
     var listOfDevices:[Device]?
-    public let dataStack = DATAStack(modelName: "JnJCCA")
+    let dataStack = DATAStack(modelName: "JnJCCA")
 
     lazy var dataSource: DATASource = {
         let request: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Device")
         request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         
         let dataSource = DATASource(tableView: self.tableView, cellIdentifier: "cellForDevice", fetchRequest: request, mainContext: self.dataStack.mainContext, configuration: { cell, item, indexPath in
-            if let name = item.value(forKey: "name") as? String, let createdDate = item.value(forKey: "createdDate") as? NSDate {
-                cell.textLabel?.text =  name + " - " + createdDate.description
+            if let name = item.value(forKey: "name") as? String, let os = item.value(forKey: "os") as? String {
+                cell.textLabel?.text =  name + " - " + os
             }
         })
         
@@ -47,26 +47,31 @@ class HomePage: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func refresh() {
+        tableView.dataSource = self.dataSource
+        tableView.reloadData()
+    }
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // return the count of listOfDevices or 0 if array is nil
-        return listOfDevices?.count ?? 0
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cellForDevice", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
+//    override func numberOfSections(in tableView: UITableView) -> Int {
+//        // #warning Incomplete implementation, return the number of sections
+//        return 1
+//    }
+//
+//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        // return the count of listOfDevices or 0 if array is nil
+//        return listOfDevices?.count ?? 0
+//    }
+//
+//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "cellForDevice", for: indexPath)
+//
+//        // Configure the cell...
+//
+//        return cell
+//    }
 
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
@@ -87,14 +92,12 @@ class HomePage: UITableViewController {
         // Pass the selected object to the new view controller.
         if segue.identifier == "showDeviceDetail" {
             let deviceDetailPage = segue.destination as! DeviceDetailPage
-            if let selectedDevice = self.dataSource.objectAtIndexPath(tableView.indexPathForSelectedRow!) {
-                deviceDetailPage.name = selectedDevice.value(forKey: "name") as! String!
-                deviceDetailPage.manufacturer = selectedDevice.value(forKey: "manufacturer") as! String!
-                deviceDetailPage.os = selectedDevice.value(forKey: "os") as! String!
-                deviceDetailPage.isCheckedOut = selectedDevice.value(forKey: "isCheckedOut") as! Bool!
-                deviceDetailPage.lastCheckedOutBy = selectedDevice.value(forKey: "lastCheckedOutBy") as! String?
-                deviceDetailPage.lastCheckedOutDate = selectedDevice.value(forKey: "lastCheckedOutDate") as! Date?
+            if let selectedDevice = self.dataSource.objectAtIndexPath(tableView.indexPathForSelectedRow!) as? Device {
+                deviceDetailPage.device = selectedDevice
             }
+        } else if segue.identifier == "showAddDevice" {
+            let addDevicePage = segue.destination as! AddDevicePage
+            addDevicePage.homePage = self
         }
     }
 }

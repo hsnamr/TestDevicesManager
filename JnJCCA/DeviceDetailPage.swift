@@ -11,12 +11,7 @@ import UIKit
 class DeviceDetailPage: UIViewController {
     
     // if we got this far, device cannot be nil
-    public var name:String!
-    public var os:String!
-    public var manufacturer:String!
-    public var isCheckedOut:Bool!
-    public var lastCheckedOutBy:String?
-    public var lastCheckedOutDate:Date?
+    public var device:Device!
 
     @IBOutlet weak var deviceLabel: UILabel!
     
@@ -32,18 +27,16 @@ class DeviceDetailPage: UIViewController {
         super.viewDidLoad()
 
         // setup the labels
-        deviceLabel.text = "Device: \(name)"
-        osLabel.text = "OS: \(os)"
-        manufacturerLabel.text = "Manufacturer: \(manufacturer)"
-        if isCheckedOut == true {
+        deviceLabel.text = "Device: \(device.name)"
+        osLabel.text = "OS: \(device.os)"
+        manufacturerLabel.text = "Manufacturer: \(device.manufacturer)"
+        if device.isCheckedOut == true {
             // if device is checked out then checkedOutBy and checkedOutDate are not nil
-            lastCheckedOutLabel.text = "Last Checked Out: \(lastCheckedOutBy) on \(lastCheckedOutDate)"
+            lastCheckedOutLabel.text = "Last Checked Out: \(device.lastCheckedOutBy) on \(device.lastCheckedOutDate)"
             // and button should be Check In
             checkInOutButton.titleLabel?.text = "Check In"
         } else {
-            // if the device is available then hide the label
-            lastCheckedOutLabel.isHidden = true
-            // and button should be Check Out
+            // if the device is available then button should be Check Out
             checkInOutButton.titleLabel?.text = "Check Out"
         }
         // Do any additional setup after loading the view.
@@ -55,8 +48,43 @@ class DeviceDetailPage: UIViewController {
     }
     
     @IBAction func checkInOutDevice(_ sender: Any) {
+        device.isCheckedOut = !device.isCheckedOut
+        if device.isCheckedOut == true {
+            // the device is being checked out
+            // display alert popup with textfield for person's name
+            alert(title: "Check Out", message: "\n", action1: "Cancel", action2: "Save")
+        } else {
+            // the device is being checked in
+        }
     }
     
+    func alert(title:String, message:String, action1: String, action2: String) {
+        var checkedOutByTextField: UITextField!
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        alert.addTextField { (textfield) in
+            textfield.placeholder = "Please enter your name"
+            checkedOutByTextField = textfield
+        }
+        alert.addAction(UIAlertAction(title: action1, style: .cancel, handler:{ (_) in
+            return
+        }))
+        alert.addAction(UIAlertAction(title: action2, style: .default, handler:{ (UIAlertAction) in
+            print("Checking out device: \(self.device.name)")
+            self.device.lastCheckedOutBy = checkedOutByTextField.text
+            print("Checked out by: \(self.device.lastCheckedOutBy)")
+            self.device.lastCheckedOutDate = Date.init(timeIntervalSinceNow: 0) as NSDate?
+            print("Checked out date: \(self.device.lastCheckedOutDate)")
+            self.dismiss(animated: true, completion: {
+                // the device is being checked out, isCheckedOut must be true, else fail
+                assert(self.device.isCheckedOut == true)
+                // pass the information to Core Data
+                PersistenceService.shared.updateDevice(id: self.device.id, isCheckedOut: self.device.isCheckedOut, lastCheckedOutBy: self.device.lastCheckedOutBy, lastCheckedOutDate: self.device.lastCheckedOutDate as Date?)
+                // and then web service
+            })
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
 
     /*
     // MARK: - Navigation

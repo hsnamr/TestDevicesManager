@@ -14,6 +14,9 @@ class AddDevicePage: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var manufacturerTextField: UITextField!
     @IBOutlet weak var titleBar: UINavigationBar!
     
+    // homePage cannot be nil
+    public var homePage:HomePage!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -49,7 +52,7 @@ class AddDevicePage: UIViewController, UITextFieldDelegate {
 
     @IBAction func cancel(_ sender: Any) {
         if (deviceTextField.text?.characters.count)! > 0 || (osTextField.text?.characters.count)! > 0 || (manufacturerTextField.text?.characters.count)! > 0 {
-            print("Warning: Are you sure you want to cancel?")
+            alert(title: "Warning", message: "Are you sure you want to cancel?", action1: "Yes", action2: "No")
         } else {
             dismiss(animated: true, completion: nil)
         }
@@ -57,13 +60,35 @@ class AddDevicePage: UIViewController, UITextFieldDelegate {
     
     @IBAction func save(_ sender: Any) {
         if (deviceTextField.text?.characters.count)! == 0 || (osTextField.text?.characters.count)! == 0 || (manufacturerTextField.text?.characters.count)! == 0 {
-            print("Warning: All fields are mandatory")
+            alert(title: "Error", message: "Please fill all the fields", action1: nil, action2: "OK")
         } else {
             dismiss(animated: true, completion: {
-                // pass data to Core Data and then from Core Data to the web service
+                // pass data to Core Data
+                PersistenceService.shared.addDevice(name: self.deviceTextField.text!, os: self.osTextField.text!, manufacturer: self.manufacturerTextField.text!)
+                // and then from Core Data to the web service
+                // TO-DO: perform needed reachability checks and service calls
+                // refresh Home Page
+                self.homePage.refresh()
             })
         }
     }
+    
+    func alert(title:String, message:String, action1: String?, action2: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        if let _ = action1 {
+            alert.addAction(UIAlertAction(title: action1!, style: .cancel, handler: { (_) in
+                self.dismiss(animated: true, completion: nil)
+            }))
+        }
+
+        alert.addAction(UIAlertAction(title: action2, style: .default, handler: { (_) in
+            return
+        }))
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
     /*
     // MARK: - Navigation
 
