@@ -14,24 +14,15 @@ class HomePage: UITableViewController {
     
     var listOfDevices:[Device]?
     let dataStack = DATAStack(modelName: "JnJCCA")
-
-    lazy var dataSource: DATASource = {
-        let request: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Device")
-        request.sortDescriptors = [
-            NSSortDescriptor(key: "name", ascending: true),
-        ]
-        
-        let dataSource = DATASource(tableView: self.tableView, cellIdentifier: "cellForDevice", fetchRequest: request, mainContext: self.dataStack.mainContext)
-        dataSource.delegate = self
-        
-        return dataSource
-    }()
+    
+    var dataSource:DATASource!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellForDevice")
-        self.tableView.dataSource = self.dataSource
+        
+        refresh()
         
         WebService.shared.getDevices()
         
@@ -48,10 +39,14 @@ class HomePage: UITableViewController {
     }
     
     func refresh() {
-        self.dataStack.mainContext.refreshAllObjects()
+        let request: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Device")
+        request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         
-        tableView.dataSource = dataSource
-        tableView.reloadData()
+        dataSource = DATASource(tableView: self.tableView, cellIdentifier: "cellForDevice", fetchRequest: request, mainContext: self.dataStack.mainContext, configuration: { cell, item, indexPath in
+            cell.textLabel?.text = "\(item.value(forKey: "name")!) - \(item.value(forKey: "os")!)"
+        })
+        
+        self.tableView.dataSource = dataSource
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -104,12 +99,5 @@ class HomePage: UITableViewController {
             let addDevicePage = segue.destination as! AddDevicePage
             addDevicePage.homePage = self
         }
-    }
-}
-
-extension HomePage: DATASourceDelegate {
-    
-    func dataSource(_ dataSource: DATASource, configureTableViewCell cell: UITableViewCell, withItem item: NSManagedObject, atIndexPath indexPath: IndexPath) {
-        cell.textLabel?.text = item.value(forKey: "name") as? String ?? ""
     }
 }

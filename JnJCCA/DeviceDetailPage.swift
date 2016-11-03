@@ -26,7 +26,12 @@ class DeviceDetailPage: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // setup the labels
+        setupView()
+        // Do any additional setup after loading the view.
+    }
+    
+    func setupView() {
+        // setup the labels and button
         deviceLabel.text = "Device: \(device.name!)"
         osLabel.text = "OS: \(device.os!)"
         manufacturerLabel.text = "Manufacturer: \(device.manufacturer!)"
@@ -37,6 +42,7 @@ class DeviceDetailPage: UIViewController {
             checkInOutButton.setTitle("Check In", for: .normal)
         } else if device.isCheckedOut == false {
             if let _ = device.lastCheckedOutDate {
+                lastCheckedOutLabel.isHidden = false
                 lastCheckedOutLabel.text = "Last Checked Out: \(device.lastCheckedOutBy!) on \(device.lastCheckedOutDate!)"
             } else {
                 // the device might have never been checked out before
@@ -45,9 +51,8 @@ class DeviceDetailPage: UIViewController {
             // if the device is available then button should be Check Out
             checkInOutButton.setTitle("Check Out", for: .normal)
         }
-        // Do any additional setup after loading the view.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -61,6 +66,10 @@ class DeviceDetailPage: UIViewController {
             alert(title: "Check Out", message: "", action1: "Cancel", action2: "Save")
         } else {
             // the device is being checked in
+            assert(self.device.isCheckedOut == false)
+            self.setupView()
+            // pass the information to Core Data
+            PersistenceService.shared.updateDevice(id: device.objectID, isCheckedOut: false, lastCheckedOutBy: nil, lastCheckedOutDate: nil)
         }
     }
     
@@ -76,13 +85,15 @@ class DeviceDetailPage: UIViewController {
             return
         }))
         alert.addAction(UIAlertAction(title: action2, style: .default, handler:{ (UIAlertAction) in
-            print("Checking out device: \(self.device.name)")
+//            print("Checking out device: \(self.device.name)")
             self.device.lastCheckedOutBy = checkedOutByTextField.text
-            print("Checked out by: \(self.device.lastCheckedOutBy)")
+//            print("Checked out by: \(self.device.lastCheckedOutBy)")
             self.device.lastCheckedOutDate = Date.init(timeIntervalSinceNow: 0) as NSDate?
-            print("Checked out date: \(self.device.lastCheckedOutDate)")
+//            print("Checked out date: \(self.device.lastCheckedOutDate)")
+            
             // the device is being checked out, isCheckedOut must be true, else fail
             assert(self.device.isCheckedOut == true)
+            self.setupView()
             // pass the information to Core Data
             PersistenceService.shared.updateDevice(id: self.device.objectID, isCheckedOut: self.device.isCheckedOut, lastCheckedOutBy: self.device.lastCheckedOutBy, lastCheckedOutDate: self.device.lastCheckedOutDate as Date?)
             // and then web service
