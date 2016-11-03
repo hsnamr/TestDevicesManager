@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		756EDCCF1DC97CED00D6BB98 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756EDCCE1DC97CED00D6BB98 /* WebService.swift */; };
 		756EDCD91DCA465000D6BB98 /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756EDCD81DCA465000D6BB98 /* PersistenceService.swift */; };
+		7595F5CF1DCBCB4C001A28C3 /* DeviceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7595F5CD1DCBCB4C001A28C3 /* DeviceCell.swift */; };
+		7595F5D01DCBCB4C001A28C3 /* DeviceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7595F5CE1DCBCB4C001A28C3 /* DeviceCell.xib */; };
 		75F0586E1DC954BF00A8C5C4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F0586D1DC954BF00A8C5C4 /* AppDelegate.swift */; };
 		75F058731DC954BF00A8C5C4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 75F058711DC954BF00A8C5C4 /* Main.storyboard */; };
 		75F058761DC954BF00A8C5C4 /* JnJCCA.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 75F058741DC954BF00A8C5C4 /* JnJCCA.xcdatamodeld */; };
@@ -25,6 +27,8 @@
 		30EC6EE538E585CBB46D22AC /* Pods-JnJCCA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JnJCCA.release.xcconfig"; path = "Pods/Target Support Files/Pods-JnJCCA/Pods-JnJCCA.release.xcconfig"; sourceTree = "<group>"; };
 		756EDCCE1DC97CED00D6BB98 /* WebService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 		756EDCD81DCA465000D6BB98 /* PersistenceService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
+		7595F5CD1DCBCB4C001A28C3 /* DeviceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceCell.swift; sourceTree = "<group>"; };
+		7595F5CE1DCBCB4C001A28C3 /* DeviceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeviceCell.xib; sourceTree = "<group>"; };
 		75F0586A1DC954BF00A8C5C4 /* JnJCCA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JnJCCA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75F0586D1DC954BF00A8C5C4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		75F058721DC954BF00A8C5C4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -98,6 +102,8 @@
 				75F0589E1DC95B6800A8C5C4 /* DeviceDetailPage.swift */,
 				75F0589F1DC95B6800A8C5C4 /* HomePage.swift */,
 				75F058A21DC95B9300A8C5C4 /* AddDevicePage.swift */,
+				7595F5CD1DCBCB4C001A28C3 /* DeviceCell.swift */,
+				7595F5CE1DCBCB4C001A28C3 /* DeviceCell.xib */,
 			);
 			name = Screens;
 			sourceTree = "<group>";
@@ -185,6 +191,7 @@
 				75F0587B1DC954BF00A8C5C4 /* LaunchScreen.storyboard in Resources */,
 				75F058781DC954BF00A8C5C4 /* Assets.xcassets in Resources */,
 				75F058731DC954BF00A8C5C4 /* Main.storyboard in Resources */,
+				7595F5D01DCBCB4C001A28C3 /* DeviceCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -246,6 +253,7 @@
 				756EDCD91DCA465000D6BB98 /* PersistenceService.swift in Sources */,
 				756EDCCF1DC97CED00D6BB98 /* WebService.swift in Sources */,
 				75F058A31DC95B9300A8C5C4 /* AddDevicePage.swift in Sources */,
+				7595F5CF1DCBCB4C001A28C3 /* DeviceCell.swift in Sources */,
 				75F058A11DC95B6800A8C5C4 /* HomePage.swift in Sources */,
 				75F058A01DC95B6800A8C5C4 /* DeviceDetailPage.swift in Sources */,
 				75F058761DC954BF00A8C5C4 /* JnJCCA.xcdatamodeld in Sources */,

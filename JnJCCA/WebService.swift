@@ -8,6 +8,7 @@
 
 import Foundation
 import Alamofire
+import SwiftyJSON
 
 class WebService {
     let baseURL = "http://private-1cc0f-devicecheckout.apiary-mock.com"
@@ -16,14 +17,18 @@ class WebService {
     private init() {}
     
     // get devices
-    func getDevices() {
+    func getDevices(completion: @escaping ()->()) {
         request("\(baseURL)/devices", method: .get)
             .validate(statusCode: 200..<300)
             .validate(contentType: ["application/json"])
             .responseJSON(completionHandler: { (response) in
-            if let JSON = response.result.value {
-                print("JSON: \(JSON)")
-            }
+                switch response.result {
+                case .success(let value):
+                    let json = JSON(value)
+                    PersistenceService.shared.addDevices(from: json, completion: completion)
+                case .failure(let error):
+                    print(error)
+                }
         })
     }
     

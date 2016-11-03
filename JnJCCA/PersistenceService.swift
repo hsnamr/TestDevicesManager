@@ -9,6 +9,7 @@
 import Foundation
 import DATAStack
 import DATASource
+import SwiftyJSON
 
 class PersistenceService {
     public static let shared = PersistenceService()
@@ -25,15 +26,35 @@ class PersistenceService {
         try! self.dataStack.mainContext.save()
     }
     
-    func addDevices(from json:[String:Any]) {
+    func addDevices(from json:JSON, completion: ()->()) {
         let entity = NSEntityDescription.entity(forEntityName: "Device", in: self.dataStack.mainContext)!
-        let object = NSManagedObject(entity: entity, insertInto: self.dataStack.mainContext)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         
-        for (key, value) in json {
-            object.setValue(value, forKey: key)
+        for item in json.array! {
+            if deviceExists(id: Int16(item["id"].intValue)) {
+                // device is already in Core Data
+                continue
+            }
+            let object = NSManagedObject(entity: entity, insertInto: self.dataStack.mainContext)
+            object.setValue(item["device"].string!, forKey: "name")
+            object.setValue(item["os"].string!, forKey: "os")
+            object.setValue(item["manufacturer"].string!, forKey: "manufacturer")
+            if let _ = item["isCheckedOut"].bool {
+                object.setValue(item["isCheckedOut"].boolValue, forKey: "isCheckedOut")
+            }
+            if let _ = item["lastCheckedOutBy"].string {
+                object.setValue(item["lastCheckedOutBy"].string!, forKey: "lastCheckedOutBy")
+            }
+            if let _ = item["lastCheckedOutDate"].string {
+                object.setValue(dateFormatter.date(from: item["lastCheckedOutDate"].string!), forKey: "lastCheckedOutDate")
+            }
+            object.setValue(Int16(item["id"].intValue), forKey: "id")
         }
         
         try! self.dataStack.mainContext.save()
+        
+        completion()
     }
     
     func updateDevice(id: NSManagedObjectID, isCheckedOut: Bool, lastCheckedOutBy: String?, lastCheckedOutDate: Date?) {
@@ -50,6 +71,33 @@ class PersistenceService {
                 try! self.dataStack.mainContext.save()
             }
         }
+    }
+    
+    func deviceExists(id: Int16) -> Bool {
+        // Define fetch request/predicate/sort descriptors
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Device")
+        let sortDescriptor = NSSortDescriptor(key: "id", ascending: true)
+        let predicate = NSPredicate(format: "id == \(id)", argumentArray: nil)
+        
+        // Assign fetch request properties
+        fetchRequest.predicate = predicate
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        fetchRequest.fetchBatchSize = 1
+        fetchRequest.fetchLimit = 1
+        
+        // Handle results
+        let fetchedResult = try! self.dataStack.mainContext.fetch(fetchRequest)
+        
+        if fetchedResult.count == 0 {
+            return false
+        }
+        
+        if let fetchedDevice = fetchedResult[0] as? Device {
+            print("Fetched device with ID = \(id). The name of this device is '\(fetchedDevice.name)'")
+            return true
+        }
+        
+        return false
     }
     
     func fetchDevice(id: NSManagedObjectID) -> Device? {

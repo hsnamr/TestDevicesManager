@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="DeviceCell" customModule="JnJCCA" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BXK-fb-Y8M">
+                        <rect key="frame" x="8" y="22" width="304" height="21"/>
+                        <fontDescription key="fontDescription" name="Noteworthy-Light" family="Noteworthy" pointSize="12"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RPI-gM-5rP">
+                        <rect key="frame" x="8" y="2" width="304" height="21"/>
+                        <fontDescription key="fontDescription" name="Noteworthy-Light" family="Noteworthy" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="RPI-gM-5rP" firstAttribute="leading" secondItem="BXK-fb-Y8M" secondAttribute="leading" id="5rD-ku-XSf"/>
+                    <constraint firstItem="RPI-gM-5rP" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="BTG-kB-LpK"/>
+                    <constraint firstItem="BXK-fb-Y8M" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="14" id="KH0-Je-nbT"/>
+                    <constraint firstAttribute="bottom" secondItem="BXK-fb-Y8M" secondAttribute="bottom" id="NNn-n9-amc"/>
+                    <constraint firstItem="RPI-gM-5rP" firstAttribute="trailing" secondItem="BXK-fb-Y8M" secondAttribute="trailing" id="Uu0-yV-JSQ"/>
+                    <constraint firstItem="RPI-gM-5rP" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-6" id="XRr-Wz-zJt"/>
+                    <constraint firstItem="RPI-gM-5rP" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="qz3-DG-uxN"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="RPI-gM-5rP" secondAttribute="bottom" constant="12" id="smI-HX-Tnb"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="detail" destination="BXK-fb-Y8M" id="iiP-pz-r3x"/>
+                <outlet property="device" destination="RPI-gM-5rP" id="5oi-Yc-coZ"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

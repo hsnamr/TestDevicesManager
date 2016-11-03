@@ -15,16 +15,17 @@ class HomePage: UITableViewController, DATASourceDelegate {
     var listOfDevices:[Device]?
     let dataStack = DATAStack(modelName: "JnJCCA")
     var dataSource:DATASource!
+    var refreshTimer:Timer?
+    var refreshInterval = 0.5
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellForDevice")
+        self.tableView.register(UINib(nibName: "DeviceCell", bundle: nil), forCellReuseIdentifier: "cellForDevice")
         self.tableView.setEditing(true, animated: true)
-        
-        refresh()
-        
-        WebService.shared.getDevices()
+        WebService.shared.getDevices(completion: {
+            self.refresh()
+        })
         
         // the following is not necessary
         // 1. we are extending uitableviewcontroller
@@ -49,7 +50,15 @@ class HomePage: UITableViewController, DATASourceDelegate {
         request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         
         dataSource = DATASource(tableView: self.tableView, cellIdentifier: "cellForDevice", fetchRequest: request, mainContext: self.dataStack.mainContext, configuration: { cell, item, indexPath in
-            cell.textLabel?.text = "\(item.value(forKey: "name")!) - \(item.value(forKey: "os")!)"
+            (cell as! DeviceCell).device.text = "\(item.value(forKey: "name")!) - \(item.value(forKey: "os")!)"
+//            (cell as! DeviceCell).detail.text = "Available"
+            if let isCheckedOut = item.value(forKey: "isCheckedOut") as! Bool? {
+                if isCheckedOut == true {
+                    (cell as! DeviceCell).detail.text = "Checked out by \(item.value(forKey: "lastCheckedOutBy")!)"
+                } else {
+                    (cell as! DeviceCell).detail.text = "Available"
+                }
+            }
         })
         
         self.tableView.dataSource = dataSource
@@ -115,6 +124,15 @@ class HomePage: UITableViewController, DATASourceDelegate {
         }))
         
         present(alert, animated: true, completion: nil)
+    }
+    
+    // MARK: - Timer methods
+    func setRefreshTimer() {
+        if (refreshTimer != nil) {
+            return
+        }
+        
+        refreshTimer = Timer.scheduledTimer(timeInterval: refreshInterval, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
     }
 
     // MARK: - Navigation
