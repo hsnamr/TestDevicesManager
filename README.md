@@ -1,10 +1,19 @@
 # README #
 
 # Change Log #
-12:35AM Thursday, November 03, 2016:
+18:35 Thursday, November 03, 2016:
+1. Initial load from JSON to Core Data
+2. Added SwiftyJSON
+3. Custom DeviceCell
+
+Missing:
+1. Sync between JSON and Core Data
+2. JSON to Add/Update/Delete device(s)
+
+12:35 Thursday, November 03, 2016:
 The UI is complete. Swipe to delete is not working, despite implementing the two necessary methods, I must be missing some setting that changed with Swift 3.0. Row deletion, at least for now, is implemented in a less-elegant manner.
 
-The Core Data stack is complete. Add, update and delete through the UI work. The initial addition from JSON response is not done yet, as the HTTP/JSON stack is not done yet. On track to complete by 12:00AM Tuesday, November 08, 2016.
+The Core Data stack is complete. Add, update and delete through the UI work. The initial load from JSON response is not done yet, as the HTTP/JSON stack is not done yet. On track to complete by 12:00 Tuesday, November 08, 2016.
 
 # Architecture #
 The app has three screens, and hence three classes corresponding to each view. The app also has two classes that provide services (Web and Persistence) to those classes. The app is designed to follow the MVC pattern, but not Apple's MVC. Here, the ViewController is the View, the Model is Core Data's ManagedObjects, which is in this app's case a single Device entity/class, and the controller is split between the WebService and PersistenceService. If this app was larger, or if I had more time, there would be a separate Controller class or a ServicesManager to act as the Controller.
