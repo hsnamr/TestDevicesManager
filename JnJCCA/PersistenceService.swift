@@ -65,5 +65,6 @@ class PersistenceService {
     func deleteDevice(id: NSManagedObjectID) {
         let object = self.dataStack.mainContext.object(with: id)
         self.dataStack.mainContext.delete(object)
+        try! self.dataStack.mainContext.save()
     }
 }

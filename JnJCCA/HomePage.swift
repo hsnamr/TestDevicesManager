@@ -10,7 +10,7 @@ import UIKit
 import DATAStack
 import DATASource
 
-class HomePage: UITableViewController {
+class HomePage: UITableViewController, DATASourceDelegate {
     
     var listOfDevices:[Device]?
     let dataStack = DATAStack(modelName: "JnJCCA")
@@ -20,10 +20,17 @@ class HomePage: UITableViewController {
         super.viewDidLoad()
         
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellForDevice")
-        self.tableView.allowsSelectionDuringEditing = false
+        self.tableView.setEditing(true, animated: true)
+        
         refresh()
         
         WebService.shared.getDevices()
+        
+        // the following is not necessary
+        // 1. we are extending uitableviewcontroller
+        // 2. already set in the interface builder
+//        self.tableView.delegate = self
+//        self.tableView.dataSource = self
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -46,6 +53,7 @@ class HomePage: UITableViewController {
         })
         
         self.tableView.dataSource = dataSource
+        self.dataSource.delegate = self
         self.tableView.reloadData()
     }
     
@@ -53,33 +61,54 @@ class HomePage: UITableViewController {
         performSegue(withIdentifier: "showDeviceDetail", sender: self)
     }
     
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func dataSource(_ dataSource: DATASource, tableView: UITableView, canEditRowAtIndexPath indexPath: IndexPath) -> Bool {
         return true
     }
-
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    
+    // not swipe to delete, but couldn't get that to work using the uitableview delegates below
+    func dataSource(_ dataSource: DATASource, tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: IndexPath) {
         if editingStyle == .delete {
-            // To-Do: Add warning dialogue before committing deletion
-            if let selectedDevice = self.dataSource.objectAtIndexPath(self.tableView.indexPathForSelectedRow!) as? Device {
+            if let selectedDevice = self.dataSource.objectAtIndexPath(indexPath) as? Device {
+
                 PersistenceService.shared.deleteDevice(id: selectedDevice.objectID)
-                alert(title: "Warning", message: "Are you sure you want to delete \(selectedDevice.name)?", action1: "Delete", action2: "No")
+                alert(title: "Warning", message: "Are you sure you want to delete \(selectedDevice.name!)?", action1: "Delete", action2: "No", userData: selectedDevice.objectID)
             }
 //            tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
     
-    func alert(title:String, message:String, action1: String?, action2: String) {
+    /* the following should work but isn't, I've done it before. I could be missing a config somewhere */
+//    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+//        return true
+//    }
+//
+//    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+//        return .delete
+//    }
+//
+//    // Override to support editing the table view.
+//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+//        if editingStyle == .delete {
+//            if let selectedDevice = self.dataSource.objectAtIndexPath(indexPath) as? Device {
+//                
+//                PersistenceService.shared.deleteDevice(id: selectedDevice.objectID)
+//                alert(title: "Warning", message: "Are you sure you want to delete \(selectedDevice.name!)?", action1: "Delete", action2: "No", userData: selectedDevice.objectID)
+//            }
+//            //            tableView.deleteRows(at: [indexPath], with: .fade)
+//        } else if editingStyle == .insert {
+//            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+//        }
+//    }
+    
+    func alert(title:String, message:String, action1: String, action2: String, userData: Any) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
-        if let _ = action1 {
-            alert.addAction(UIAlertAction(title: action1!, style: .cancel, handler: { (_) in
-                // Delete the row from the data source
-                if let selectedDevice = self.dataSource.objectAtIndexPath(self.tableView.indexPathForSelectedRow!) as? Device {
-                    PersistenceService.shared.deleteDevice(id: selectedDevice.objectID)
-                }
-            }))
-        }
+        alert.addAction(UIAlertAction(title: action1, style: .destructive, handler: { (_) in
+            // Delete the row from the data source
+            PersistenceService.shared.deleteDevice(id: userData as! NSManagedObjectID)
+            // refresh
+            self.refresh()
+        }))
         
         alert.addAction(UIAlertAction(title: action2, style: .default, handler: { (_) in
             return
