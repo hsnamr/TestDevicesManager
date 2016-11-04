@@ -11,5 +11,5 @@ target 'JnJCCA' do
     pod 'DATASource', '~> 6'
     pod 'SwiftyJSON'
     pod 'Alamofire', '~> 4.0'
-
+    pod 'ReachabilitySwift', '~> 3'
 end

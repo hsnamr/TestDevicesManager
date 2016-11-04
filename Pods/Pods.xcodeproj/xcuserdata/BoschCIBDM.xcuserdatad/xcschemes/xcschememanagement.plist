@@ -24,6 +24,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>ReachabilitySwift.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>SYNCPropertyMapper.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -42,7 +47,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>289ABB1362580A3DC785992F4E45DCF8</key>
+		<key>15EB28BC1E17BC5CC67CC855CAE02E9F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -52,12 +57,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5C1FC1137E1F5079DBA0B501AE391F0E</key>
+		<key>3D478624ADF8580CFE9D117F8E4E072C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>66ACAD3FE40F7C7B0C146E8290C7B1E8</key>
+		<key>614CB0EDD75492AE2F0AE5753FA1CE72</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -72,7 +77,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F1E71A8A1FB6A508917E73439D529237</key>
+		<key>BEE0010C5776973714B7AB5646DD7CF0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C01C208AA27FE6ED2900BD4438C0E496</key>
 		<dict>
 			<key>primary</key>
 			<true/>

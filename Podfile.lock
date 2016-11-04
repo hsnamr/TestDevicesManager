@@ -2,6 +2,7 @@ PODS:
   - Alamofire (4.0.1)
   - DATASource (6.1.1)
   - DATAStack (6.1.2)
+  - ReachabilitySwift (3)
   - SwiftyJSON (3.1.1)
   - Sync (2.3.4):
     - DATAStack (~> 6.1.2)
@@ -12,6 +13,7 @@ DEPENDENCIES:
   - Alamofire (~> 4.0)
   - DATASource (~> 6)
   - DATAStack (~> 6)
+  - ReachabilitySwift (~> 3)
   - SwiftyJSON
   - Sync (~> 2)
 
@@ -19,10 +21,11 @@ SPEC CHECKSUMS:
   Alamofire: 7682d43245de14874acd142ec137b144aa1dd335
   DATASource: fa895931841523f62c1378cbc53ef2de87e5cf30
   DATAStack: a45fc144e15193f1b22c26b507cc46655ce96a71
+  ReachabilitySwift: f5b9bb30a0777fac8f09ce8b067e32faeb29bb64
   SwiftyJSON: f0be2e604f83e8405a624e9f891898bf6ed4e019
   Sync: b946c2ab9c51153f075bcaec828215d071ddf6db
   SYNCPropertyMapper: e4cf0f851aa3a1307a42985ab8600787b3382427
 
-PODFILE CHECKSUM: 6fca19f29b9f390f1874a9a4a5cacb4a28f204ab
+PODFILE CHECKSUM: 12f108031267069dce5965b4fa2db92efd43051d
 
 COCOAPODS: 1.1.1
