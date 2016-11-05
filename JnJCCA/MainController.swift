@@ -84,7 +84,7 @@ class MainController {
             }
             
             // find all updated devices in userdefaults
-            let unsyncedUpdates = PersistenceService.shared.read(name: "UpdatedDevices") as! [NSManagedObjectID]
+            let unsyncedUpdates = PersistenceService.shared.read(name: "UpdatedDevices") as! [NSManagedObjectID]? ?? [NSManagedObjectID]()
             for objectID in unsyncedUpdates {
                 let device = PersistenceService.shared.fetchDevice(id: objectID)
                 WebService.shared.updateDevice(id: (device?.id)!, isCheckedOut: (device?.isCheckedOut)!, lastCheckedOutBy: device?.lastCheckedOutBy, lastCheckedOutDate: device?.lastCheckedOutDate as Date?)
@@ -92,7 +92,7 @@ class MainController {
             
             // find all deleted devices
             // we only care about devices with id as they are the only ones that will be on the web service
-            let unsyncedDeletes = PersistenceService.shared.read(name: "DeletedDevices") as! [Int16]
+            let unsyncedDeletes = PersistenceService.shared.read(name: "DeletedDevices") as! [Int16]? ?? [Int16]()
             for id in unsyncedDeletes {
                 WebService.shared.deleteDevice(id: id)
             }

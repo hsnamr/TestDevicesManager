@@ -102,7 +102,7 @@ class PersistenceService {
         var predicate:NSPredicate!
         if let _ = id {
             // fetching device by id to check if exists
-            predicate = NSPredicate(format: "id == \(id)", argumentArray: nil)
+            predicate = NSPredicate(format: "id == \(id!)", argumentArray: nil)
         } else {
             // fetching unsynced devices
             predicate = NSPredicate(format: "isSynced == \(false)", argumentArray: nil)
@@ -115,13 +115,13 @@ class PersistenceService {
         fetchRequest.fetchLimit = 1
         
         // Handle results
-        let fetchedResult = try! self.dataStack.mainContext.fetch(fetchRequest)
+        let fetchedResult = try? self.dataStack.mainContext.fetch(fetchRequest)
         
-        if fetchedResult.count == 0 {
+        if fetchedResult?.count == 0 {
             return nil
         }
         
-        if let fetchedDevice = fetchedResult[0] as? Device {
+        if let fetchedDevice = fetchedResult?[0] as? Device {
             print("Fetched device with id = \(fetchedDevice.id), isSynced = \(fetchedDevice.isSynced), name '\(fetchedDevice.name)'")
             return fetchedDevice
         }
