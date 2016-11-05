@@ -17,7 +17,8 @@ class PersistenceService {
     
     let dataStack = DATAStack(modelName: "JnJCCA")
     
-    func addDevice(name: String, os: String, manufacturer: String) {
+    // used by AddDevicePage
+    func addDevice(name: String, os: String, manufacturer: String, isSynced: Bool) {
         let entity = NSEntityDescription.entity(forEntityName: "Device", in: self.dataStack.mainContext)!
         let object = NSManagedObject(entity: entity, insertInto: self.dataStack.mainContext)
         object.setValue(name, forKey: "name")
@@ -26,13 +27,14 @@ class PersistenceService {
         try! self.dataStack.mainContext.save()
     }
     
+    // used for intial load
     func addDevices(from json:JSON, completion: ()->()) {
         let entity = NSEntityDescription.entity(forEntityName: "Device", in: self.dataStack.mainContext)!
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         
         for item in json.array! {
-            if deviceExists(id: Int16(item["id"].intValue)) {
+            if (deviceExists(id: Int16(item["id"].intValue)) != nil) {
                 // device is already in Core Data
                 continue
             }
@@ -57,6 +59,7 @@ class PersistenceService {
         completion()
     }
     
+    // used by DeviceDetailPage
     func updateDevice(id: NSManagedObjectID, isCheckedOut: Bool, lastCheckedOutBy: String?, lastCheckedOutDate: Date?) {
         if isCheckedOut == true {
             if let object = fetchDevice(id: id) {
@@ -73,31 +76,8 @@ class PersistenceService {
         }
     }
     
-    func deviceExists(id: Int16) -> Bool {
-        // Define fetch request/predicate/sort descriptors
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Device")
-        let sortDescriptor = NSSortDescriptor(key: "id", ascending: true)
-        let predicate = NSPredicate(format: "id == \(id)", argumentArray: nil)
-        
-        // Assign fetch request properties
-        fetchRequest.predicate = predicate
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        fetchRequest.fetchBatchSize = 1
-        fetchRequest.fetchLimit = 1
-        
-        // Handle results
-        let fetchedResult = try! self.dataStack.mainContext.fetch(fetchRequest)
-        
-        if fetchedResult.count == 0 {
-            return false
-        }
-        
-        if let fetchedDevice = fetchedResult[0] as? Device {
-            print("Fetched device with ID = \(id). The name of this device is '\(fetchedDevice.name)'")
-            return true
-        }
-        
-        return false
+    func deviceExists(id: Int16) -> Device? {
+        return fetchDevice(id: id)
     }
     
     func fetchDevice(id: NSManagedObjectID) -> Device? {
@@ -110,9 +90,58 @@ class PersistenceService {
         return nil
     }
     
+    // returns device if there are unsynced devices, else nil
+    func fetchUnsyncedDevices() -> Device? {
+        return fetchDevice(id: nil)
+    }
+    
+    func fetchDevice(id: Int16?) -> Device? {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Device")
+        let sortDescriptor = NSSortDescriptor(key: "id", ascending: true)
+        
+        var predicate:NSPredicate!
+        if let _ = id {
+            // fetching device by id to check if exists
+            predicate = NSPredicate(format: "id == \(id)", argumentArray: nil)
+        } else {
+            // fetching unsynced devices
+            predicate = NSPredicate(format: "isSynced == \(false)", argumentArray: nil)
+        }
+        
+        // Assign fetch request properties
+        fetchRequest.predicate = predicate
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        fetchRequest.fetchBatchSize = 1
+        fetchRequest.fetchLimit = 1
+        
+        // Handle results
+        let fetchedResult = try! self.dataStack.mainContext.fetch(fetchRequest)
+        
+        if fetchedResult.count == 0 {
+            return nil
+        }
+        
+        if let fetchedDevice = fetchedResult[0] as? Device {
+            print("Fetched device with id = \(fetchedDevice.id), isSynced = \(fetchedDevice.isSynced), name '\(fetchedDevice.name)'")
+            return fetchedDevice
+        }
+        
+        return nil
+    }
+    
     func deleteDevice(id: NSManagedObjectID) {
         let object = self.dataStack.mainContext.object(with: id)
         self.dataStack.mainContext.delete(object)
         try! self.dataStack.mainContext.save()
+    }
+    
+    func write(array: [Any], name: String) {
+        let defaults = UserDefaults.standard
+        defaults.set(array, forKey: name)
+    }
+    
+    func read(name: String) -> [Any]? {
+        let defaults = UserDefaults.standard
+        return defaults.array(forKey: name)
     }
 }

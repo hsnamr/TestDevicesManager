@@ -8,6 +8,8 @@
 
 import UIKit
 
+// because the prototype cell when dequeued refuses to respect the Subtitle style set in Interface Builder
+// had to roll own this custom class
 class DeviceCell: UITableViewCell {
 
     @IBOutlet weak var device: UILabel!

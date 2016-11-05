@@ -6,10 +6,8 @@ target 'JnJCCA' do
   use_frameworks!
 
   # Pods for JnJCCA
-    pod 'Sync', '~> 2'
     pod 'DATAStack', '~> 6'
     pod 'DATASource', '~> 6'
     pod 'SwiftyJSON'
     pod 'Alamofire', '~> 4.0'
-    pod 'ReachabilitySwift', '~> 3'
 end

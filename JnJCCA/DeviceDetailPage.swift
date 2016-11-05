@@ -60,11 +60,16 @@ class DeviceDetailPage: UIViewController {
             // display alert popup with textfield for person's name
             alert(title: "Check Out", message: "", action1: "Cancel", action2: "Save")
         } else {
-            // the device is being checked in
+            // the device is being checked in, isCheckedOut must be false, else fail
             assert(self.device.isCheckedOut == false)
             self.setupView()
             // pass the information to Core Data
             PersistenceService.shared.updateDevice(id: device.objectID, isCheckedOut: false, lastCheckedOutBy: nil, lastCheckedOutDate: nil)
+            if WebService.shared.isConnectedToNetwork() {
+                WebService.shared.updateDevice(id: device.id, isCheckedOut: false, lastCheckedOutBy: nil, lastCheckedOutDate: nil)
+            } else {
+                print("Not connected to network. Take note of device.")
+            }
         }
     }
     
@@ -86,9 +91,19 @@ class DeviceDetailPage: UIViewController {
             // the device is being checked out, isCheckedOut must be true, else fail
             assert(self.device.isCheckedOut == true)
             self.setupView()
-            // pass the information to Core Data
-            PersistenceService.shared.updateDevice(id: self.device.objectID, isCheckedOut: self.device.isCheckedOut, lastCheckedOutBy: self.device.lastCheckedOutBy, lastCheckedOutDate: self.device.lastCheckedOutDate as Date?)
-            // and then web service
+            if WebService.shared.isConnectedToNetwork() {
+                // pass the information to Core Data
+                PersistenceService.shared.updateDevice(id: self.device.objectID, isCheckedOut: self.device.isCheckedOut, lastCheckedOutBy: self.device.lastCheckedOutBy, lastCheckedOutDate: self.device.lastCheckedOutDate as Date?)
+                // and then web service
+                WebService.shared.updateDevice(id: self.device.id, isCheckedOut: true, lastCheckedOutBy: self.device.lastCheckedOutBy, lastCheckedOutDate: self.device.lastCheckedOutDate as Date?)
+            } else {
+                // pass the information to Core Data
+                PersistenceService.shared.updateDevice(id: self.device.objectID, isCheckedOut: self.device.isCheckedOut, lastCheckedOutBy: self.device.lastCheckedOutBy, lastCheckedOutDate: self.device.lastCheckedOutDate as Date?)
+                // and take note of the device
+                var array = PersistenceService.shared.read(name: "UpdatedDevices")
+                array?.append(self.device.objectID)
+                PersistenceService.shared.write(array: array!, name: "UpdatedDevices")
+            }
 
         }))
         self.present(alert, animated: true, completion: nil)

@@ -9,12 +9,37 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import SystemConfiguration
 
 class WebService {
     let baseURL = "http://private-1cc0f-devicecheckout.apiary-mock.com"
     
     public static let shared = WebService()
     private init() {}
+    
+    // http://stackoverflow.com/a/39783037
+    func isConnectedToNetwork() -> Bool {
+        
+        var zeroAddress = sockaddr_in(sin_len: 0, sin_family: 0, sin_port: 0, sin_addr: in_addr(s_addr: 0), sin_zero: (0, 0, 0, 0, 0, 0, 0, 0))
+        zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
+        zeroAddress.sin_family = sa_family_t(AF_INET)
+        
+        let defaultRouteReachability = withUnsafePointer(to: &zeroAddress) {
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {zeroSockAddress in
+                SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
+            }
+        }
+        
+        var flags: SCNetworkReachabilityFlags = SCNetworkReachabilityFlags(rawValue: 0)
+        if SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) == false {
+            return false
+        }
+        
+        let isReachable = flags == .reachable
+        let needsConnection = flags == .connectionRequired
+        
+        return isReachable && !needsConnection
+    }
     
     // get devices
     func getDevices(completion: @escaping ()->()) {
@@ -33,8 +58,8 @@ class WebService {
     }
     
     // adds a new device
-    func add(device: Device) {
-        let parameters = ["device":device.name, "os":device.os, "manufacturer":device.manufacturer]
+    func addDevice(name: String, os: String, manufacturer: String) {
+        let parameters = ["device":name, "os":os, "manufacturer":manufacturer]
         request("\(baseURL)/devices", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil)
             .validate(statusCode: 200..<300)
             .validate(contentType: ["application/json"])
@@ -46,15 +71,16 @@ class WebService {
     }
     
     // updates existing device
-    // can be used to check out device
-    func update(device: Device) {
+    // used to check in/out device
+    func updateDevice(id: Int16, isCheckedOut: Bool, lastCheckedOutBy: String?, lastCheckedOutDate: Date?) {
         var parameters:[String : Any]!
-        if device.isCheckedOut {
-            parameters = ["lastCheckedOutDate":device.lastCheckedOutDate!, "lastCheckedOutBy":device.lastCheckedOutBy!, "isCheckedOut":device.isCheckedOut] as [String : Any]
-        } else {
-            parameters = ["isCheckedOut":device.isCheckedOut]
+        if isCheckedOut == true {
+            // crashes here because of the date format: pass dummy date string for now
+            parameters = ["lastCheckedOutDate":"2016-11-04T10:33:00-05:00", "lastCheckedOutBy":lastCheckedOutBy!, "isCheckedOut":true] as [String : Any]
+        } else if isCheckedOut == false {
+            parameters = ["isCheckedOut":false]
         }
-        request("\(baseURL)/devices/\(device.id)", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil)
+        request("\(baseURL)/devices/\(id)", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil)
             .validate(statusCode: 200..<300)
             .validate(contentType: ["application/json"])
             .responseJSON(completionHandler: { (response) in
@@ -64,9 +90,9 @@ class WebService {
             })
     }
     
-    // delete device
-    func delete(device: Device) {
-        request("\(baseURL)/devices/\(device.id)", method: .delete, parameters: nil, encoding: JSONEncoding.default, headers: nil)
+    // deletes device
+    func deleteDevice(id: Int16) {
+        request("\(baseURL)/devices/\(id)", method: .delete, parameters: nil, encoding: JSONEncoding.default, headers: nil)
             .validate(statusCode: 200..<300)
     }
 }
