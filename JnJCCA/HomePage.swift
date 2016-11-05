@@ -25,10 +25,8 @@ class HomePage: UITableViewController, DATASourceDelegate {
         self.tableView.setEditing(true, animated: true)
         
         setupDataSource()
-        if WebService.shared.isConnectedToNetwork() {
-            WebService.shared.getDevices(completion: {
-                self.refresh()
-            })
+        MainController.shared.getDevices { 
+            self.refresh()
         }
         
         // the following is not necessary
@@ -72,32 +70,9 @@ class HomePage: UITableViewController, DATASourceDelegate {
     }
     
     func refresh() {
-        if WebService.shared.isConnectedToNetwork() {
-            syncOfflineChanges()
-        }
+        MainController.shared.syncOfflineChanges()
         setupDataSource()
         self.tableView.reloadData()
-    }
-    
-    func syncOfflineChanges() {
-        // find all added devices
-        while let device = PersistenceService.shared.fetchUnsyncedDevices() as Device? {
-            WebService.shared.addDevice(name: device.name!, os: device.os!, manufacturer: device.manufacturer!)
-        }
-        
-        // find all updated devices in userdefaults
-        let unsyncedUpdates = PersistenceService.shared.read(name: "UpdatedDevices") as! [NSManagedObjectID]
-        for objectID in unsyncedUpdates {
-            let device = PersistenceService.shared.fetchDevice(id: objectID)
-            WebService.shared.updateDevice(id: (device?.id)!, isCheckedOut: (device?.isCheckedOut)!, lastCheckedOutBy: device?.lastCheckedOutBy, lastCheckedOutDate: device?.lastCheckedOutDate as Date?)
-        }
-        
-        // find all deleted devices
-        // we only care about devices with id as they are the only ones that will be on the web service
-        let unsyncedDeletes = PersistenceService.shared.read(name: "DeletedDevices") as! [Int16]
-        for id in unsyncedDeletes {
-            WebService.shared.deleteDevice(id: id)
-        }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -146,20 +121,8 @@ class HomePage: UITableViewController, DATASourceDelegate {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: action1, style: .destructive, handler: { (_) in
-            
-            if WebService.shared.isConnectedToNetwork() {
-                // Delete the row from the data source
-                PersistenceService.shared.deleteDevice(id: userData[0] as! NSManagedObjectID)
-                // and web service
-                WebService.shared.deleteDevice(id: userData[1] as! Int16)
-            } else {
-                // Delete the row from the data source
-                PersistenceService.shared.deleteDevice(id: userData[0] as! NSManagedObjectID)
-                // and take note of the device
-                var array = PersistenceService.shared.read(name: "DeletedDevices")
-                array?.append(userData[1] as! Int16)
-                PersistenceService.shared.write(array: array!, name: "DeletedDevices")
-            }
+            // delete device
+            MainController.shared.deleteDevice(userData: userData)
             // refresh
             self.refresh()
         }))

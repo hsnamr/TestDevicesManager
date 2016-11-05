@@ -64,15 +64,7 @@ class AddDevicePage: UIViewController, UITextFieldDelegate {
             alert(title: "Error", message: "Please fill all the fields", action1: nil, action2: "OK")
         } else {
             dismiss(animated: true, completion: {
-                if WebService.shared.isConnectedToNetwork() {
-                    // pass data to Core Data, isSyneced is true
-                    PersistenceService.shared.addDevice(name: self.deviceTextField.text!, os: self.osTextField.text!, manufacturer: self.manufacturerTextField.text!, isSynced: true)
-                    // and to web
-                    WebService.shared.addDevice(name: self.deviceTextField.text!, os: self.osTextField.text!, manufacturer: self.manufacturerTextField.text!)
-                } else {
-                    // pass data to Core Data and set isSynced to false
-                    PersistenceService.shared.addDevice(name: self.deviceTextField.text!, os: self.osTextField.text!, manufacturer: self.manufacturerTextField.text!, isSynced: false)
-                }
+                MainController.shared.addDevice(name: self.deviceTextField.text!, os: self.osTextField.text!, manufacturer: self.manufacturerTextField.text!)
                 // refresh Home Page
                 self.homePage.refresh()
             })
