@@ -1,12 +1,12 @@
 # README #
 
 # Change Log #
-22:00 November 05, 2016:
+22:00 Saturday, November 05, 2016:
 
 Added hack due to JSON response always giving back id = 5 for added devices and we need id to be unique to keep track of updates and deletions. Ideally we would have a callback that takes the JSON response and uses it to add the device to Core Data. In other words if online upload to webservice and then store the response to Core Data. Else if offline store in Core Data and then once online update with id from JSON response.
 
 
-21:00 November 04, 2016:
+21:00 Friday, November 04, 2016:
 
 Refactored control from screens to MainController.
 Implemented reachability check, and if the web service is not reachable, took note of offline changes to be synced once connected.
@@ -25,6 +25,7 @@ Missing:
 2. JSON to Add/Update/Delete device(s)
 
 12:35 Thursday, November 03, 2016:
+
 The UI is complete. Swipe to delete is not working, despite implementing the two necessary methods, I must be missing some setting that changed with Swift 3.0. Row deletion, at least for now, is implemented in a less-elegant manner.
 
 The Core Data stack is complete. Add, update and delete through the UI work. The initial load from JSON response is not done yet, as the HTTP/JSON stack is not done yet. On track to complete by 12:00 Tuesday, November 08, 2016.
