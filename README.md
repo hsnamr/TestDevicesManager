@@ -35,6 +35,10 @@ The app has three screens, and hence three classes corresponding to each view. T
 
 Since there is a need for only one instance of the controller, the WebService and PersistenceService are Singletons. Again if I had a controller class, it would be something like: Controller.shared.web and Controller.shared.persistence, but for now it is: PersistenceService.shared and WebService.shared.
 
+Update:
+
+Added MainController, taking control away from the viewcontrollers and having a single interface for both WebService and PersistenceService, since most of their functions are called together.
+
 # Multithreading #
 Short answer: No
 
