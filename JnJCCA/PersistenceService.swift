@@ -28,6 +28,10 @@ class PersistenceService {
         object.setValue(isSynced, forKey: "isSynced")
         
         // hack since web service always returns id = 5 for added devices and we need id to be unique to keep track of updates and deletions
+        // ideally we would have a callback that takes the JSON response and uses it to add the device to Core Data
+        // In other words if online upload to webservice and then store response to Core Data
+        // if offline store in Core Data and then once online update with id from JSON response
+        // though for now since the web service is mock we just do this
         struct Hack {
             static var idc:Int16 = 5
         }
