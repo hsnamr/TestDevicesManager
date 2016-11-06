@@ -1,15 +1,17 @@
 # README #
 
 # Change Log #
-22:00 November 05, 2016
-Added hack due to JSON response always giving back id = 5 for added devices and we need id to be unique to keep track of updates and deletions. Ideally we would have a callback that takes the JSON response and uses it to add the device to Core Data. In other words if online upload to webservice and then store the response to Core Data. Else if offline store in Core Data and then once online update with id from JSON response.
---
+22:00 November 05, 2016:
 
-21:00 November 04, 2016
+Added hack due to JSON response always giving back id = 5 for added devices and we need id to be unique to keep track of updates and deletions. Ideally we would have a callback that takes the JSON response and uses it to add the device to Core Data. In other words if online upload to webservice and then store the response to Core Data. Else if offline store in Core Data and then once online update with id from JSON response.
+
+
+21:00 November 04, 2016:
+
 Refactored control from screens to MainController.
 Implemented reachability check, and if the web service is not reachable, took note of offline changes to be synced once connected.
 For devices updated and deleted offline, since we have the id, I am using an array stored in user defaults to keep track of them. However, for added devices we don't have the id from JSON, and so I am using a boolean to mark whether they have been synchronized to web service or not.
---
+
 
 18:35 Thursday, November 03, 2016:
 1. Initial load from JSON to Core Data
