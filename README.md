@@ -14,6 +14,7 @@ For devices updated and deleted offline, since we have the id, I am using an arr
 
 
 18:35 Thursday, November 03, 2016:
+
 1. Initial load from JSON to Core Data
 2. Added SwiftyJSON
 3. Custom DeviceCell
