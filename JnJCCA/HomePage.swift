@@ -24,6 +24,7 @@ class HomePage: UITableViewController, DATASourceDelegate {
         self.tableView.register(UINib(nibName: "DeviceCell", bundle: nil), forCellReuseIdentifier: "cellForDevice")
         self.tableView.setEditing(true, animated: true)
         
+        MainController.shared.clearUserDefaults()
         setupDataSource()
         MainController.shared.getDevices { 
             self.refresh()
@@ -48,25 +49,37 @@ class HomePage: UITableViewController, DATASourceDelegate {
     }
     
     func setupDataSource() {
+        let array = MainController.shared.readUpdatedAndDeleted()
+        
         let request: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Device")
         request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        if let _ = array {
+            if (array?.count)! > 0 {
+                let predicate : NSPredicate = NSPredicate(format: "NOT (id IN %@ AND isSynced == true)", array!)
+                request.predicate = predicate
+            }
+        }
+        
         
         dataSource = DATASource(tableView: self.tableView, cellIdentifier: "cellForDevice", fetchRequest: request, mainContext: self.dataStack.mainContext, configuration: { cell, item, indexPath in
-            (cell as! DeviceCell).device.text = "\(item.value(forKey: "name")!) - \(item.value(forKey: "os")!)"
-            //            (cell as! DeviceCell).detail.text = "Available"
-            if let isCheckedOut = item.value(forKey: "isCheckedOut") as! Bool? {
-                if isCheckedOut == true {
-                    if let _ = item.value(forKey: "lastCheckedOutBy") {
-                    (cell as! DeviceCell).detail.text = "Checked out by \(item.value(forKey: "lastCheckedOutBy")!)"
-                    }
-                } else {
-                    (cell as! DeviceCell).detail.text = "Available"
-                }
-            }
+            self.setupCell(cell: cell, item: item)
         })
         
         self.tableView.dataSource = dataSource
         self.dataSource.delegate = self
+    }
+    
+    func setupCell(cell: UITableViewCell, item: NSManagedObject) {
+        (cell as! DeviceCell).device.text = "\(item.value(forKey: "name")!) - \(item.value(forKey: "os")!)"
+        if let isCheckedOut = item.value(forKey: "isCheckedOut") as! Bool? {
+            if isCheckedOut == true {
+                if let _ = item.value(forKey: "lastCheckedOutBy") {
+                    (cell as! DeviceCell).detail.text = "Checked out by \(item.value(forKey: "lastCheckedOutBy")!)"
+                }
+            } else if isCheckedOut == false {
+                (cell as! DeviceCell).detail.text = "Available"
+            }
+        }
     }
     
     func refresh() {
@@ -86,10 +99,8 @@ class HomePage: UITableViewController, DATASourceDelegate {
     // not swipe to delete, but couldn't get that to work using the uitableview delegates below
     func dataSource(_ dataSource: DATASource, tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: IndexPath) {
         if editingStyle == .delete {
-            if let selectedDevice = self.dataSource.objectAtIndexPath(indexPath) as? Device {
 
-                alert(title: "Warning", message: "Are you sure you want to delete \(selectedDevice.name!)?", action1: "Delete", action2: "No", userData: [selectedDevice.objectID, selectedDevice.id])
-            }
+        alert(title: "Warning", message: "Delete ", action1: "Delete", action2: "Cancel", indexPath: indexPath)
 //            tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
@@ -117,12 +128,13 @@ class HomePage: UITableViewController, DATASourceDelegate {
 //        }
 //    }
     
-    func alert(title:String, message:String, action1: String, action2: String, userData: [Any]) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    func alert(title:String, message:String, action1: String, action2: String, indexPath: IndexPath) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
         
         alert.addAction(UIAlertAction(title: action1, style: .destructive, handler: { (_) in
+            let selectedDevice = self.dataSource.objectAtIndexPath(indexPath) as? Device
             // delete device
-            MainController.shared.deleteDevice(userData: userData)
+            MainController.shared.deleteDevice(device: selectedDevice)
             // refresh
             self.refresh()
         }))

@@ -40,8 +40,11 @@ class MainController {
             PersistenceService.shared.updateDevice(id: device.objectID, isCheckedOut: false, lastCheckedOutBy: nil, lastCheckedOutDate: nil)
             WebService.shared.updateDevice(id: device.id, isCheckedOut: false, lastCheckedOutBy: nil, lastCheckedOutDate: nil)
         } else {
-            print("Not connected to network. Take note of device.")
+            // pass the information to Core Data
+            PersistenceService.shared.updateDevice(id: device.objectID, isCheckedOut: device.isCheckedOut, lastCheckedOutBy: device.lastCheckedOutBy, lastCheckedOutDate: device.lastCheckedOutDate as Date?)
         }
+        // and take note of the device
+        noteUpdatedDevices(id: device.id)
     }
     
     func checkOutDevice(device: Device) {
@@ -53,27 +56,38 @@ class MainController {
         } else {
             // pass the information to Core Data
             PersistenceService.shared.updateDevice(id: device.objectID, isCheckedOut: device.isCheckedOut, lastCheckedOutBy: device.lastCheckedOutBy, lastCheckedOutDate: device.lastCheckedOutDate as Date?)
-            // and take note of the device
-            var array = PersistenceService.shared.read(name: "UpdatedDevices")
-            array?.append(device.objectID)
-            PersistenceService.shared.write(array: array!, name: "UpdatedDevices")
         }
+        // and take note of the device
+        noteUpdatedDevices(id: device.id)
     }
     
-    func deleteDevice(userData: [Any]) {
+    func noteUpdatedDevices(id: Int16) {
+        var array = Set<Int16>(PersistenceService.shared.read(name: "UpdatedDevices") as! [Int16]? ?? [Int16]())
+        array.insert(id)
+        PersistenceService.shared.write(array: Array(array), name: "UpdatedDevices")
+    }
+    
+    func noteDeleteddDevices(id: Int16) {
+        var array = Set<Int16>(PersistenceService.shared.read(name: "DeletedDevices") as! [Int16]? ?? [Int16]())
+        array.insert(id)
+        PersistenceService.shared.write(array: Array(array), name: "DeletedDevices")
+    }
+    
+    func deleteDevice(device: Device?) {
+
+        guard device != nil else {
+            return
+        }
         if WebService.shared.isConnectedToNetwork() {
             // Delete the row from the data source
-            PersistenceService.shared.deleteDevice(id: userData[0] as! NSManagedObjectID)
+            PersistenceService.shared.deleteDevice(id: (device?.objectID)!)
             // and web service
-            WebService.shared.deleteDevice(id: userData[1] as! Int16)
+            WebService.shared.deleteDevice(id: (device?.id)!)
         } else {
             // Delete the row from the data source
-            PersistenceService.shared.deleteDevice(id: userData[0] as! NSManagedObjectID)
-            // and take note of the device
-            var array = PersistenceService.shared.read(name: "DeletedDevices")
-            array?.append(userData[1] as! Int16)
-            PersistenceService.shared.write(array: array!, name: "DeletedDevices")
+            PersistenceService.shared.deleteDevice(id: (device?.objectID)!)
         }
+        noteDeleteddDevices(id: (device?.id)!)
     }
     
     func syncOfflineChanges() {
@@ -84,10 +98,12 @@ class MainController {
             }
             
             // find all updated devices in userdefaults
-            let unsyncedUpdates = PersistenceService.shared.read(name: "UpdatedDevices") as! [NSManagedObjectID]? ?? [NSManagedObjectID]()
-            for objectID in unsyncedUpdates {
-                let device = PersistenceService.shared.fetchDevice(id: objectID)
-                WebService.shared.updateDevice(id: (device?.id)!, isCheckedOut: (device?.isCheckedOut)!, lastCheckedOutBy: device?.lastCheckedOutBy, lastCheckedOutDate: device?.lastCheckedOutDate as Date?)
+            let unsyncedUpdates = PersistenceService.shared.read(name: "UpdatedDevices") as! [Int16]? ?? [Int16]()
+            for id in unsyncedUpdates {
+                let device = PersistenceService.shared.fetchDevice(id: id)
+                if let _ = device {
+                    WebService.shared.updateDevice(id: (device?.id)!, isCheckedOut: (device?.isCheckedOut)!, lastCheckedOutBy: device?.lastCheckedOutBy, lastCheckedOutDate: device?.lastCheckedOutDate as Date?)
+                }
             }
             
             // find all deleted devices
@@ -96,6 +112,39 @@ class MainController {
             for id in unsyncedDeletes {
                 WebService.shared.deleteDevice(id: id)
             }
+        }
+    }
+    
+    func readDeletedDevices() -> [Int16]? {
+        return  PersistenceService.shared.read(name: "DeletedDevices") as! [Int16]?
+    }
+    
+    func readUpdatedDevices() -> [Int16]? {
+        return  PersistenceService.shared.read(name: "UpdatedDevices") as! [Int16]?
+    }
+    
+    func readUpdatedAndDeleted() -> Set<Int16>? {
+        guard readUpdatedDevices() != nil else {
+            return nil
+        }
+        guard readDeletedDevices() != nil else {
+            return nil
+        }
+        var array = Set<Int16>()
+        for id1 in readUpdatedDevices()! {
+            for id2 in readDeletedDevices()! {
+                if id1 == id2 {
+                    array.insert(id2)
+                }
+            }
+        }
+        
+        return array
+    }
+    
+    func clearUserDefaults() {
+        if WebService.shared.isConnectedToNetwork() {
+            PersistenceService.shared.clear()
         }
     }
 }

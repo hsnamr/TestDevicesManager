@@ -24,6 +24,8 @@ class PersistenceService {
         object.setValue(name, forKey: "name")
         object.setValue(os, forKey: "os")
         object.setValue(manufacturer, forKey: "manufacturer")
+        object.setValue(false, forKey: "isCheckedOut")
+        object.setValue(isSynced, forKey: "isSynced")
         try! self.dataStack.mainContext.save()
     }
     
@@ -52,6 +54,7 @@ class PersistenceService {
                 object.setValue(dateFormatter.date(from: item["lastCheckedOutDate"].string!), forKey: "lastCheckedOutDate")
             }
             object.setValue(Int16(item["id"].intValue), forKey: "id")
+            object.setValue(true, forKey: "isSynced")
         }
         
         try! self.dataStack.mainContext.save()
@@ -143,5 +146,10 @@ class PersistenceService {
     func read(name: String) -> [Any]? {
         let defaults = UserDefaults.standard
         return defaults.array(forKey: name)
+    }
+    
+    func clear() {
+        let appDomain = Bundle.main.bundleIdentifier!
+        UserDefaults.standard.removePersistentDomain(forName: appDomain)
     }
 }
