@@ -26,6 +26,16 @@ class PersistenceService {
         object.setValue(manufacturer, forKey: "manufacturer")
         object.setValue(false, forKey: "isCheckedOut")
         object.setValue(isSynced, forKey: "isSynced")
+        
+        // hack since web service always returns id = 5 for added devices and we need id to be unique to keep track of updates and deletions
+        struct Hack {
+            static var idc:Int16 = 5
+        }
+        while deviceExists(id: Hack.idc) != nil {
+            Hack.idc += 1
+        }
+        
+        object.setValue(Hack.idc, forKey: "id")
         try! self.dataStack.mainContext.save()
     }
     

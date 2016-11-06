@@ -36,11 +36,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JnJCCA/PersistenceService.swift"
-            timestampString = "500082289.618355"
+            timestampString = "500089717.933574"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "43"
-            endingLineNumber = "43"
+            startingLineNumber = "53"
+            endingLineNumber = "53"
             landmarkName = "addDevices(from:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -52,11 +52,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JnJCCA/PersistenceService.swift"
-            timestampString = "500082289.618355"
+            timestampString = "500089717.933574"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "54"
-            endingLineNumber = "54"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
             landmarkName = "addDevices(from:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -96,7 +96,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JnJCCA/HomePage.swift"
@@ -109,14 +109,14 @@
             landmarkType = "7">
             <Locations>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "JnJCCA.HomePage.setupDataSource () -&gt; ()"
                   moduleName = "JnJCCA"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/BoschCIBDM/Documents/Development/workspace/JnJCCA/JnJCCA/HomePage.swift"
-                  timestampString = "500083877.41807"
+                  timestampString = "500088879.370773"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "57"
@@ -124,14 +124,14 @@
                   offsetFromSymbolStart = "771">
                </Location>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "JnJCCA.HomePage.setupDataSource () -&gt; ()"
                   moduleName = "JnJCCA"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/BoschCIBDM/Documents/Development/workspace/JnJCCA/JnJCCA/HomePage.swift"
-                  timestampString = "500083877.419396"
+                  timestampString = "500088879.371969"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "57"
@@ -186,6 +186,38 @@
             startingLineNumber = "127"
             endingLineNumber = "127"
             landmarkName = "readUpdatedAndDeleted()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JnJCCA/WebService.swift"
+            timestampString = "500084277.126212"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "addDevice(name:os:manufacturer:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JnJCCA/WebService.swift"
+            timestampString = "500089286.502015"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "69"
+            endingLineNumber = "69"
+            landmarkName = "addDevice(name:os:manufacturer:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

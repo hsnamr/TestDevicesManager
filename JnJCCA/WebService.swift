@@ -64,8 +64,12 @@ class WebService {
             .validate(statusCode: 200..<300)
             .validate(contentType: ["application/json"])
             .responseJSON(completionHandler: { (response) in
-                if let JSON = response.result.value {
-                    print("JSON: \(JSON)")
+                switch response.result {
+                case .success(let value):
+                    let json = JSON(value)
+                    print(json)
+                case .failure(let error):
+                    print(error)
                 }
         })
     }
