@@ -20,6 +20,7 @@ For devices updated and deleted offline, since we have the id, I am using an arr
 3. Custom DeviceCell
 
 Missing:
+
 1. Sync between JSON and Core Data
 2. JSON to Add/Update/Delete device(s)
 
