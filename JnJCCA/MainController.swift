@@ -82,7 +82,7 @@ class MainController {
             // Delete the row from the data source
             PersistenceService.shared.deleteDevice(id: (device?.objectID)!)
             // and web service
-            WebService.shared.deleteDevice(id: (device?.id)!)
+            WebService.shared.deleteDevice(id: (device?.id)!, completion: nil)
         } else {
             // Delete the row from the data source
             PersistenceService.shared.deleteDevice(id: (device?.objectID)!)
@@ -110,7 +110,7 @@ class MainController {
             // we only care about devices with id as they are the only ones that will be on the web service
             let unsyncedDeletes = PersistenceService.shared.read(name: "DeletedDevices") as! [Int16]? ?? [Int16]()
             for id in unsyncedDeletes {
-                WebService.shared.deleteDevice(id: id)
+                WebService.shared.deleteDevice(id: id, completion: nil)
             }
         }
     }

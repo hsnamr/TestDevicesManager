@@ -95,8 +95,15 @@ class WebService {
     }
     
     // deletes device
-    func deleteDevice(id: Int16) {
+    func deleteDevice(id: Int16, completion:((String)->())?) {
         request("\(baseURL)/devices/\(id)", method: .delete, parameters: nil, encoding: JSONEncoding.default, headers: nil)
-            .validate(statusCode: 200..<300)
+            .validate(statusCode: 200..<300).responseJSON { response in
+                switch response.result {
+                case .success:
+                    completion?("Success")
+                case .failure(_):
+                    completion?("Failure")
+                }
+        }
     }
 }
