@@ -15,8 +15,6 @@ class HomePage: UITableViewController, DATASourceDelegate {
     var listOfDevices:[Device]?
     let dataStack = DATAStack(modelName: "JnJCCA")
     var dataSource:DATASource!
-    var refreshTimer:Timer?
-    var refreshInterval = 0.5
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -144,15 +142,6 @@ class HomePage: UITableViewController, DATASourceDelegate {
         }))
         
         present(alert, animated: true, completion: nil)
-    }
-    
-    // MARK: - Timer methods
-    func setRefreshTimer() {
-        if (refreshTimer != nil) {
-            return
-        }
-        
-        refreshTimer = Timer.scheduledTimer(timeInterval: refreshInterval, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
     }
 
     // MARK: - Navigation

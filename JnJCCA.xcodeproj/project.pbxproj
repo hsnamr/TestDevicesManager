@@ -26,6 +26,7 @@
 		C993A24A1DD3A72700A88638 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756EDCCE1DC97CED00D6BB98 /* WebService.swift */; };
 		C993A24B1DD3A72900A88638 /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756EDCD81DCA465000D6BB98 /* PersistenceService.swift */; };
 		C993A24C1DD3A74300A88638 /* JnJCCA.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 75F058741DC954BF00A8C5C4 /* JnJCCA.xcdatamodeld */; };
+		C99C4D7C1DD52C36001AB0F7 /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7592DAF11DCD7D1F006708AC /* MainController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -395,6 +396,7 @@
 				C993A24A1DD3A72700A88638 /* WebService.swift in Sources */,
 				C993A24B1DD3A72900A88638 /* PersistenceService.swift in Sources */,
 				C993A2431DD3A64900A88638 /* JnJCCATests.swift in Sources */,
+				C99C4D7C1DD52C36001AB0F7 /* MainController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

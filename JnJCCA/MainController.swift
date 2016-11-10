@@ -13,9 +13,14 @@ class MainController {
     
     var updatedDevices = [Int16]()
     var deletedDevices = [Int16]()
+    
+    var syncTimer:Timer?
+    var syncInterval = 1.0
 
     public static let shared = MainController()
-    private init() {}
+    private init() {
+        setSyncTimer()
+    }
     
     func getDevices(completion: @escaping ()->()) {
         if WebService.shared.isConnectedToNetwork() {
@@ -75,22 +80,22 @@ class MainController {
         updatedDevices = Array(set)
     }
     
-    func noteDeleteddDevices(id: Int16) {
+    func noteDeletedDevices(id: Int16) {
         var set = Set<Int16>(deletedDevices)
         set.insert(id)
         deletedDevices = Array(set)
     }
     
     func writeUnsyncedUpdates(id: Int16) {
-        var array = Set<Int16>(PersistenceService.shared.read(name: "UnsyncedUpdates") as! [Int16]? ?? [Int16]())
-        array.insert(id)
-        PersistenceService.shared.write(array: Array(array), name: "UnsyncedUpdates")
+        var set = Set<Int16>(PersistenceService.shared.read(name: "UnsyncedUpdates") as! [Int16]? ?? [Int16]())
+        set.insert(id)
+        PersistenceService.shared.write(array: Array(set), name: "UnsyncedUpdates")
     }
     
     func writeUnsyncedDeletes(id: Int16) {
-        var array = Set<Int16>(PersistenceService.shared.read(name: "UnsyncedDeletes") as! [Int16]? ?? [Int16]())
-        array.insert(id)
-        PersistenceService.shared.write(array: Array(array), name: "UnsyncedDeletes")
+        var set = Set<Int16>(PersistenceService.shared.read(name: "UnsyncedDeletes") as! [Int16]? ?? [Int16]())
+        set.insert(id)
+        PersistenceService.shared.write(array: Array(set), name: "UnsyncedDeletes")
     }
     
     func deleteDevice(device: Device?) {
@@ -110,36 +115,49 @@ class MainController {
             writeUnsyncedDeletes(id: (device?.id)!)
         }
         // and take note of the device -- this is because if a device is updated, it won't be deleted from Core Data until the app is restarted
-        noteDeleteddDevices(id: (device?.id)!)
+        noteDeletedDevices(id: (device?.id)!)
     }
     
-    func syncOfflineChanges() {
+    func syncOfflineAdds() {
+        // find all added devices
+        while let device = PersistenceService.shared.fetchUnsyncedDevices() as Device? {
+            WebService.shared.addDevice(name: device.name!, os: device.os!, manufacturer: device.manufacturer!, completion: nil)
+            // set isSynced true
+            PersistenceService.shared.markSynced(id: device.objectID)
+        }
+    }
+    
+    func syncOfflineUpdates() {
+        // find all updated devices in userdefaults
+        let unsyncedUpdates = PersistenceService.shared.read(name: "UnsyncedUpdates") as! [Int16]? ?? [Int16]()
+        for id in unsyncedUpdates {
+            let device = PersistenceService.shared.fetchDevice(id: id)
+            if let _ = device {
+                // the device has not been deleted, retrieve its data from Core Data and call the web service
+                WebService.shared.updateDevice(id: (device?.id)!, isCheckedOut: (device?.isCheckedOut)!, lastCheckedOutBy: device?.lastCheckedOutBy, lastCheckedOutDate: device?.lastCheckedOutDate as Date?)
+            }
+        }
+        
+        // delete UnsyncedUpdates array now that it is synced
+        PersistenceService.shared.remove(key: "UnsyncedUpdates")
+    }
+    
+    func syncOfflineDeletes() {
+        // find all deleted devices
+        // we only care about devices with id as they are the only ones that will be on the web service
+        let unsyncedDeletes = PersistenceService.shared.read(name: "UnsyncedDeletes") as! [Int16]? ?? [Int16]()
+        for id in unsyncedDeletes {
+            WebService.shared.deleteDevice(id: id, completion: nil)
+        }
+        // delete UnsyncedDeletes array now that it is synced
+        PersistenceService.shared.remove(key: "UnsyncedDeletes")
+    }
+    
+    @objc func syncOfflineChanges() {
         if WebService.shared.isConnectedToNetwork() {
-            // find all added devices
-            while let device = PersistenceService.shared.fetchUnsyncedDevices() as Device? {
-                WebService.shared.addDevice(name: device.name!, os: device.os!, manufacturer: device.manufacturer!, completion: nil)
-            }
-            
-            // find all updated devices in userdefaults
-            let unsyncedUpdates = PersistenceService.shared.read(name: "UnsyncedUpdates") as! [Int16]? ?? [Int16]()
-            for id in unsyncedUpdates {
-                let device = PersistenceService.shared.fetchDevice(id: id)
-                if let _ = device {
-                    WebService.shared.updateDevice(id: (device?.id)!, isCheckedOut: (device?.isCheckedOut)!, lastCheckedOutBy: device?.lastCheckedOutBy, lastCheckedOutDate: device?.lastCheckedOutDate as Date?)
-                }
-            }
-            
-            // find all deleted devices
-            // we only care about devices with id as they are the only ones that will be on the web service
-            let unsyncedDeletes = PersistenceService.shared.read(name: "UnsyncedDeletes") as! [Int16]? ?? [Int16]()
-            for id in unsyncedDeletes {
-                WebService.shared.deleteDevice(id: id, completion: nil)
-            }
-            
-            // delete UnsyncedUpdates array now that it is synced
-            PersistenceService.shared.remove(key: "UnsyncedUpdates")
-            // delete UnsyncedDeletes array now that it is synced
-            PersistenceService.shared.remove(key: "UnsyncedDeletes")
+            syncOfflineAdds()
+            syncOfflineUpdates()
+            syncOfflineDeletes()
         }
     }
     
@@ -159,9 +177,13 @@ class MainController {
     func remove(key: String) {
         PersistenceService.shared.remove(key: key)
     }
-//    func clearUserDefaults() {
-//        if WebService.shared.isConnectedToNetwork() {
-//            PersistenceService.shared.clear()
-//        }
-//    }
+    
+    // MARK: - Sync timer
+    func setSyncTimer() {
+        if (syncTimer != nil) {
+            return
+        }
+        
+        syncTimer = Timer.scheduledTimer(timeInterval: syncInterval, target: self, selector: #selector(syncOfflineChanges), userInfo: nil, repeats: true)
+    }
 }

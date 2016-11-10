@@ -49,4 +49,10 @@ class JnJCCATests: XCTestCase {
         })
         waitForExpectations(timeout: 10.0, handler: nil)
     }
+    
+    func testUnsyncedDelete() {
+        MainController.shared.writeUnsyncedDeletes(id: 2)
+        MainController.shared.writeUnsyncedDeletes(id: 3)
+        XCTAssertEqual(PersistenceService.shared.read(name: "UnsyncedDeletes")?.count, 2)
+    }
 }

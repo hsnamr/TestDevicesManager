@@ -93,6 +93,14 @@ class PersistenceService {
         }
     }
     
+    // used by DeviceDetailPage
+    func markSynced(id: NSManagedObjectID) {
+        if let object = fetchDevice(id: id) {
+            object.setValue(true, forKey: "isSynced")
+            try! self.dataStack.mainContext.save()
+        }
+    }
+    
     func deviceExists(id: Int16) -> Device? {
         return fetchDevice(id: id)
     }
@@ -152,6 +160,8 @@ class PersistenceService {
         try! self.dataStack.mainContext.save()
     }
     
+    
+    // MARK: User Defaults methods
     func write(array: [Any], name: String) {
         let defaults = UserDefaults.standard
         defaults.set(array, forKey: name)
