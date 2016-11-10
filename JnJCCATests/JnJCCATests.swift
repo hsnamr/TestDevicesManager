@@ -50,7 +50,7 @@ class JnJCCATests: XCTestCase {
         waitForExpectations(timeout: 10.0, handler: nil)
     }
     
-    func testUnsyncedDelete() {
+    func testUnsyncedDeletes() {
         // fake delete some devices
         MainController.shared.writeUnsyncedDeletes(id: 2)   // 1
         MainController.shared.writeUnsyncedDeletes(id: 3)   // 2
@@ -65,5 +65,40 @@ class JnJCCATests: XCTestCase {
         let syncedDeletes = MainController.shared.syncOfflineDeletes()
         unsyncedDeletes = PersistenceService.shared.read(name: "UnsyncedDeletes")?.count ?? 0
         XCTAssertEqual(syncedDeletes, 2 - unsyncedDeletes!)
+    }
+    
+    func testUnsyncedUpdatesAndDeletes() {
+        // fake update some devices
+        MainController.shared.writeUnsyncedUpdates(id: 2)   // 1
+        MainController.shared.writeUnsyncedUpdates(id: 3)   // 2
+        MainController.shared.writeUnsyncedUpdates(id: 0)   // 3
+        MainController.shared.writeUnsyncedUpdates(id: 1)   // 4
+        MainController.shared.writeUnsyncedUpdates(id: 4)   // 5
+        // unsyncedDeletes cannot be nil
+        XCTAssertNotNil(PersistenceService.shared.read(name: "UnsyncedUpdates"))
+        
+        // unsynced updates count should be five
+        var unsyncedUpdates = PersistenceService.shared.read(name: "UnsyncedUpdates")?.count
+        XCTAssertEqual(unsyncedUpdates, 5)
+        
+        // what if some were deleted?
+        // fake delete some devices
+        MainController.shared.writeUnsyncedDeletes(id: 2)   // 1
+        MainController.shared.writeUnsyncedDeletes(id: 3)   // 2
+        // unsyncedDeletes cannot be nil
+        XCTAssertNotNil(PersistenceService.shared.read(name: "UnsyncedDeletes"))
+        
+        // unsynced deletes count should be two
+        let unsyncedDeletes = PersistenceService.shared.read(name: "UnsyncedDeletes")?.count
+        XCTAssertEqual(unsyncedDeletes, 2)
+        
+        // unsynced updates count should be three
+        unsyncedUpdates = PersistenceService.shared.read(name: "UnsyncedUpdates")?.count
+        XCTAssertEqual(unsyncedUpdates, 3)
+        
+        // perform sync and check number of synced and unsynced (connection might have dropped during sync)
+        let syncedUpdates = MainController.shared.syncOfflineUpdates()
+        unsyncedUpdates = PersistenceService.shared.read(name: "UnsyncedUpdates")?.count ?? 0
+        XCTAssertEqual(syncedUpdates, 3 - unsyncedUpdates!)
     }
 }
