@@ -93,9 +93,13 @@ class MainController {
     }
     
     func writeUnsyncedDeletes(id: Int16) {
-        var set = Set<Int16>(PersistenceService.shared.read(name: "UnsyncedDeletes") as! [Int16]? ?? [Int16]())
-        set.insert(id)
-        PersistenceService.shared.write(array: Array(set), name: "UnsyncedDeletes")
+        var dSet = Set<Int16>(PersistenceService.shared.read(name: "UnsyncedDeletes") as! [Int16]? ?? [Int16]())
+        dSet.insert(id)
+        PersistenceService.shared.write(array: Array(dSet), name: "UnsyncedDeletes")
+        // check if the device was marked as unsynced update and remove it
+        var uSet = Set<Int16>(PersistenceService.shared.read(name: "UnsyncedUpdates") as! [Int16]? ?? [Int16]())
+        uSet.remove(id)
+        PersistenceService.shared.write(array: Array(uSet), name: "UnsyncedUpdates")
     }
     
     func deleteDevice(device: Device?) {
@@ -121,44 +125,79 @@ class MainController {
     func syncOfflineAdds() {
         // find all added devices
         while let device = PersistenceService.shared.fetchUnsyncedDevices() as Device? {
-            WebService.shared.addDevice(name: device.name!, os: device.os!, manufacturer: device.manufacturer!, completion: nil)
-            // set isSynced true
-            PersistenceService.shared.markSynced(id: device.objectID)
+            // check the connection status because it might drop in the middle of a sync
+            if WebService.shared.isConnectedToNetwork() {
+                WebService.shared.addDevice(name: device.name!, os: device.os!, manufacturer: device.manufacturer!, completion: nil)
+                // set isSynced true
+                PersistenceService.shared.markSynced(id: device.objectID)
+            }
         }
     }
     
-    func syncOfflineUpdates() {
+    func syncOfflineUpdates() -> Int {
         // find all updated devices in userdefaults
         let unsyncedUpdates = PersistenceService.shared.read(name: "UnsyncedUpdates") as! [Int16]? ?? [Int16]()
+        var syncedUpdates = [Int16]()
         for id in unsyncedUpdates {
             let device = PersistenceService.shared.fetchDevice(id: id)
+            // the device has not been deleted, retrieve its data from Core Data and call the web service
             if let _ = device {
-                // the device has not been deleted, retrieve its data from Core Data and call the web service
-                WebService.shared.updateDevice(id: (device?.id)!, isCheckedOut: (device?.isCheckedOut)!, lastCheckedOutBy: device?.lastCheckedOutBy, lastCheckedOutDate: device?.lastCheckedOutDate as Date?)
+                // check the connection status because it might drop in the middle of a sync
+                if WebService.shared.isConnectedToNetwork() {
+                    WebService.shared.updateDevice(id: (device?.id)!, isCheckedOut: (device?.isCheckedOut)!, lastCheckedOutBy: device?.lastCheckedOutBy, lastCheckedOutDate: device?.lastCheckedOutDate as Date?)
+                    syncedUpdates.append(id)
+                }
             }
         }
         
-        // delete UnsyncedUpdates array now that it is synced
-        PersistenceService.shared.remove(key: "UnsyncedUpdates")
+        // have all devices been synced?
+        if syncedUpdates.count == unsyncedUpdates.count {
+            // delete UnsyncedUpdates array now that it is synced
+            PersistenceService.shared.remove(key: "UnsyncedUpdates")
+        } else {
+            // else write back the devices that weren't synced
+            let unsynced = Set(unsyncedUpdates)
+            let synced = Set(syncedUpdates)
+            
+            let diff = unsynced.subtracting(synced)
+            PersistenceService.shared.write(array: Array(diff), name: "UnsyncedUpdates")
+        }
+        
+        return syncedUpdates.count
     }
     
-    func syncOfflineDeletes() {
+    func syncOfflineDeletes() -> Int {
         // find all deleted devices
         // we only care about devices with id as they are the only ones that will be on the web service
         let unsyncedDeletes = PersistenceService.shared.read(name: "UnsyncedDeletes") as! [Int16]? ?? [Int16]()
+        var syncedDeletes = [Int16]()
         for id in unsyncedDeletes {
-            WebService.shared.deleteDevice(id: id, completion: nil)
+            if WebService.shared.isConnectedToNetwork() {
+                WebService.shared.deleteDevice(id: id, completion: nil)
+                syncedDeletes.append(id)
+            }
         }
-        // delete UnsyncedDeletes array now that it is synced
-        PersistenceService.shared.remove(key: "UnsyncedDeletes")
+
+        // have all devices been synced?
+        if syncedDeletes.count == unsyncedDeletes.count {
+            // delete UnsyncedDeletes array now that it is synced
+            PersistenceService.shared.remove(key: "UnsyncedDeletes")
+        } else {
+            // else write back the devices that weren't synced
+            let unsynced = Set(unsyncedDeletes)
+            let synced = Set(syncedDeletes)
+            
+            let diff = unsynced.subtracting(synced)
+            PersistenceService.shared.write(array: Array(diff), name: "UnsyncedDeletes")
+        }
+        
+        return syncedDeletes.count
     }
     
     @objc func syncOfflineChanges() {
-        if WebService.shared.isConnectedToNetwork() {
-            syncOfflineAdds()
-            syncOfflineUpdates()
-            syncOfflineDeletes()
-        }
+        syncOfflineAdds()
+        _ = syncOfflineUpdates()
+        _ = syncOfflineDeletes()
     }
     
     func readUpdatedAndDeleted() -> Set<Int16>? {

@@ -51,8 +51,19 @@ class JnJCCATests: XCTestCase {
     }
     
     func testUnsyncedDelete() {
-        MainController.shared.writeUnsyncedDeletes(id: 2)
-        MainController.shared.writeUnsyncedDeletes(id: 3)
-        XCTAssertEqual(PersistenceService.shared.read(name: "UnsyncedDeletes")?.count, 2)
+        // fake delete some devices
+        MainController.shared.writeUnsyncedDeletes(id: 2)   // 1
+        MainController.shared.writeUnsyncedDeletes(id: 3)   // 2
+        // unsyncedDeletes cannot be nil
+        XCTAssertNotNil(PersistenceService.shared.read(name: "UnsyncedDeletes"))
+        
+        // unsynced devices count should be two
+        var unsyncedDeletes = PersistenceService.shared.read(name: "UnsyncedDeletes")?.count
+        XCTAssertEqual(unsyncedDeletes, 2)
+        
+        // perform sync and check number of synced and unsynced (connection might have dropped during sync)
+        let syncedDeletes = MainController.shared.syncOfflineDeletes()
+        unsyncedDeletes = PersistenceService.shared.read(name: "UnsyncedDeletes")?.count ?? 0
+        XCTAssertEqual(syncedDeletes, 2 - unsyncedDeletes!)
     }
 }
