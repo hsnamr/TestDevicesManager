@@ -24,7 +24,7 @@ class HomePage: UITableViewController, DATASourceDelegate {
         self.tableView.register(UINib(nibName: "DeviceCell", bundle: nil), forCellReuseIdentifier: "cellForDevice")
         self.tableView.setEditing(true, animated: true)
         
-        MainController.shared.clearUserDefaults()
+//        MainController.shared.clearUserDefaults()
         setupDataSource()
         MainController.shared.getDevices { 
             self.refresh()

@@ -162,8 +162,12 @@ class PersistenceService {
         return defaults.array(forKey: name)
     }
     
-    func clear() {
-        let appDomain = Bundle.main.bundleIdentifier!
-        UserDefaults.standard.removePersistentDomain(forName: appDomain)
+    func remove(key: String) {
+        let defaults = UserDefaults.standard
+        defaults.removeObject(forKey: key)
     }
+//    func clear() {
+//        let appDomain = Bundle.main.bundleIdentifier!
+//        UserDefaults.standard.removePersistentDomain(forName: appDomain)
+//    }
 }

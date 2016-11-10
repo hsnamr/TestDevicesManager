@@ -32,6 +32,15 @@ class JnJCCATests: XCTestCase {
         }
     }
     
+    func testAdd() {
+        let addExpectation = expectation(description: "Add")
+        WebService.shared.addDevice(name: "iPhone 3G", os: "iOS 2", manufacturer: "Apple", completion: { string in
+            XCTAssertNotNil(string, "Success")
+            addExpectation.fulfill()
+        })
+        waitForExpectations(timeout: 10.0, handler: nil)
+    }
+    
     func testDelete() {
         let deleteExpectation = expectation(description: "Delete")
         WebService.shared.deleteDevice(id: Int16(1), completion: { string in

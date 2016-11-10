@@ -58,7 +58,7 @@ class WebService {
     }
     
     // adds a new device
-    func addDevice(name: String, os: String, manufacturer: String) {
+    func addDevice(name: String, os: String, manufacturer: String, completion: ((String)->())?) {
         let parameters = ["device":name, "os":os, "manufacturer":manufacturer]
         request("\(baseURL)/devices", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: nil)
             .validate(statusCode: 200..<300)
@@ -68,8 +68,10 @@ class WebService {
                 case .success(let value):
                     let json = JSON(value)
                     print(json)
+                    completion?("Success")
                 case .failure(let error):
                     print(error)
+                    completion?("Failure")
                 }
         })
     }
