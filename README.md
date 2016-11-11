@@ -1,6 +1,27 @@
 # README #
 
 # Change Log #
+19:00 Thursday, November 10, 2026:
+
+1. Added unit tests for add and delete
+
+2. Fixed the bug where delete request is done more than once by keeping an array in user defaults for unsynced deletes, similarly for unsynced updates, and this array is separate for the prior array that wrote all deletes to user defaults whether synced or not. That array is no longer written to user defaults, similarly for all updates synced or not.
+
+3. Added sync timer to sync offline changes if connection is back online
+
+4. Added setting isSynced to true for synced adds which was missing previously
+
+5. Used CoreTelephony to detect cell networks as initial code only worked with WiFi
+
+6. Added unit tests for unsynced deletes and updates
+
+7. Rewrote sync code and added check to compare synced and unsynced devices, in case connection dropped in the middle of a sync.
+
+Rationale:
+
+The purpose of keeping track of all updates and deletions whether synced or not, is to get around an issue where if a device has been updated (checked in/out) and then deleted, deletion will not take affect until the app is restarted. Keeping track of all updates and deletions, the deleted devices can be removed from the tableview even if the deletion hasn't taken effect in Core Data. I initially used the same array to keep track of unsynced changes, resulting in multiple deletions in some cases, since the array was written to whether the app was offline or online, and once it went online it will redo the deletions, similarly for updates.
+
+
 22:00 Saturday, November 05, 2016:
 
 Added hack due to JSON response always giving back id = 5 for added devices and we need id to be unique to keep track of updates and deletions. Ideally we would have a callback that takes the JSON response and uses it to add the device to Core Data. In other words if online upload to webservice and then store the response to Core Data. Else if offline store in Core Data and then once online update with id from JSON response.
