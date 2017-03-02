@@ -99,7 +99,7 @@
 		75F058611DC954BF00A8C5C4 = {
 			isa = PBXGroup;
 			children = (
-				75F0586C1DC954BF00A8C5C4 /* JnJCCA */,
+				75F0586C1DC954BF00A8C5C4 /* TDM */,
 				C993A2411DD3A64900A88638 /* TDMTests */,
 				75F0586B1DC954BF00A8C5C4 /* Products */,
 				9F71D46ACA41BD28997F0CF4 /* Pods */,
@@ -116,7 +116,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		75F0586C1DC954BF00A8C5C4 /* JnJCCA */ = {
+		75F0586C1DC954BF00A8C5C4 /* TDM */ = {
 			isa = PBXGroup;
 			children = (
 				756EDCCD1DC97CD200D6BB98 /* Services */,
@@ -128,7 +128,7 @@
 				75F0587C1DC954BF00A8C5C4 /* Info.plist */,
 				75F058741DC954BF00A8C5C4 /* JnJCCA.xcdatamodeld */,
 			);
-			path = JnJCCA;
+			path = TDM;
 			sourceTree = "<group>";
 		};
 		75F0589D1DC95B3F00A8C5C4 /* Screens */ = {
