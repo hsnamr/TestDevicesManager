@@ -1,6 +1,6 @@
 //
-//  PresistenceService.swift
-//  JnJCCA
+//  PersistenceService.swift
+//  TDM
 //
 //  Created by Hussian Ali Al-Amri on 11/2/16.
 //  Copyright © 2016 IM. All rights reserved.
@@ -11,173 +11,172 @@ import DATAStack
 import DATASource
 import SwiftyJSON
 
-class PersistenceService {
-    public static let shared = PersistenceService()
+final class PersistenceService {
+
+    static let shared = PersistenceService()
     private init() {}
-    
+
     let dataStack = DATAStack(modelName: "JnJCCA")
-    
-    // used by AddDevicePage
+
+    // MARK: - Device CRUD
+
+    /// Adds a new device (used by AddDevicePage).
     func addDevice(name: String, os: String, manufacturer: String, isSynced: Bool) {
-        let entity = NSEntityDescription.entity(forEntityName: "Device", in: self.dataStack.mainContext)!
-        let object = NSManagedObject(entity: entity, insertInto: self.dataStack.mainContext)
+        guard let entity = NSEntityDescription.entity(forEntityName: "Device", in: dataStack.mainContext) else {
+            return
+        }
+        let object = NSManagedObject(entity: entity, insertInto: dataStack.mainContext)
         object.setValue(name, forKey: "name")
         object.setValue(os, forKey: "os")
         object.setValue(manufacturer, forKey: "manufacturer")
         object.setValue(false, forKey: "isCheckedOut")
         object.setValue(isSynced, forKey: "isSynced")
-        
-        // hack since web service always returns id = 5 for added devices and we need id to be unique to keep track of updates and deletions
-        // ideally we would have a callback that takes the JSON response and uses it to add the device to Core Data
-        // In other words if online upload to webservice and then store response to Core Data
-        // if offline store in Core Data and then once online update with id from JSON response
-        // though for now since the web service is mock we just do this
-        struct Hack {
-            static var idc:Int16 = 5
+
+        // Assign unique id for local tracking (mock API returns fixed id).
+        var nextId: Int16 = 5
+        while deviceExists(id: nextId) != nil {
+            nextId += 1
         }
-        while deviceExists(id: Hack.idc) != nil {
-            Hack.idc += 1
+        object.setValue(nextId, forKey: "id")
+
+        do {
+            try dataStack.mainContext.save()
+        } catch {
+            print("PersistenceService addDevice save error: \(error)")
         }
-        
-        object.setValue(Hack.idc, forKey: "id")
-        try! self.dataStack.mainContext.save()
     }
-    
-    // used for intial load
-    func addDevices(from json:JSON, completion: ()->()) {
-        let entity = NSEntityDescription.entity(forEntityName: "Device", in: self.dataStack.mainContext)!
+
+    /// Bulk add devices from API response (initial load).
+    func addDevices(from json: JSON, completion: () -> Void) {
+        guard let entity = NSEntityDescription.entity(forEntityName: "Device", in: dataStack.mainContext),
+              let items = json.array else {
+            completion()
+            return
+        }
+
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        
-        for item in json.array! {
-            if (deviceExists(id: Int16(item["id"].intValue)) != nil) {
-                // device is already in Core Data
+
+        for item in items {
+            let id = Int16(item["id"].intValue)
+            if deviceExists(id: id) != nil {
                 continue
             }
-            let object = NSManagedObject(entity: entity, insertInto: self.dataStack.mainContext)
-            object.setValue(item["device"].string!, forKey: "name")
-            object.setValue(item["os"].string!, forKey: "os")
-            object.setValue(item["manufacturer"].string!, forKey: "manufacturer")
-            if let _ = item["isCheckedOut"].bool {
+            let object = NSManagedObject(entity: entity, insertInto: dataStack.mainContext)
+            object.setValue(item["device"].string, forKey: "name")
+            object.setValue(item["os"].string, forKey: "os")
+            object.setValue(item["manufacturer"].string, forKey: "manufacturer")
+            if item["isCheckedOut"].exists() {
                 object.setValue(item["isCheckedOut"].boolValue, forKey: "isCheckedOut")
             }
-            if let _ = item["lastCheckedOutBy"].string {
-                object.setValue(item["lastCheckedOutBy"].string!, forKey: "lastCheckedOutBy")
+            if let lastCheckedOutBy = item["lastCheckedOutBy"].string {
+                object.setValue(lastCheckedOutBy, forKey: "lastCheckedOutBy")
             }
-            if let _ = item["lastCheckedOutDate"].string {
-                object.setValue(dateFormatter.date(from: item["lastCheckedOutDate"].string!), forKey: "lastCheckedOutDate")
+            if let dateString = item["lastCheckedOutDate"].string,
+               let date = dateFormatter.date(from: dateString) {
+                object.setValue(date, forKey: "lastCheckedOutDate")
             }
-            object.setValue(Int16(item["id"].intValue), forKey: "id")
+            object.setValue(id, forKey: "id")
             object.setValue(true, forKey: "isSynced")
         }
-        
-        try! self.dataStack.mainContext.save()
-        
+
+        do {
+            try dataStack.mainContext.save()
+        } catch {
+            print("PersistenceService addDevices save error: \(error)")
+        }
         completion()
     }
-    
-    // used by DeviceDetailPage
+
+    /// Updates device checkout state (used by DeviceDetailPage).
     func updateDevice(id: NSManagedObjectID, isCheckedOut: Bool, lastCheckedOutBy: String?, lastCheckedOutDate: Date?) {
-        if isCheckedOut == true {
-            if let object = fetchDevice(id: id) {
-                object.setValue(isCheckedOut, forKey: "isCheckedOut")
-                object.setValue(lastCheckedOutBy, forKey: "lastCheckedOutBy")
-                object.setValue(lastCheckedOutDate, forKey: "lastCheckedOutDate")
-                try! self.dataStack.mainContext.save()
-            }
-        } else {
-            if let object = fetchDevice(id: id) {
-                object.setValue(isCheckedOut, forKey: "isCheckedOut")
-                try! self.dataStack.mainContext.save()
-            }
+        guard let object = fetchDevice(id: id) else { return }
+        object.setValue(isCheckedOut, forKey: "isCheckedOut")
+        if isCheckedOut {
+            object.setValue(lastCheckedOutBy, forKey: "lastCheckedOutBy")
+            object.setValue(lastCheckedOutDate, forKey: "lastCheckedOutDate")
+        }
+        do {
+            try dataStack.mainContext.save()
+        } catch {
+            print("PersistenceService updateDevice save error: \(error)")
         }
     }
-    
-    // used by DeviceDetailPage
+
     func markSynced(id: NSManagedObjectID) {
-        if let object = fetchDevice(id: id) {
-            object.setValue(true, forKey: "isSynced")
-            try! self.dataStack.mainContext.save()
+        guard let object = fetchDevice(id: id) else { return }
+        object.setValue(true, forKey: "isSynced")
+        do {
+            try dataStack.mainContext.save()
+        } catch {
+            print("PersistenceService markSynced save error: \(error)")
         }
     }
-    
+
     func deviceExists(id: Int16) -> Device? {
-        return fetchDevice(id: id)
+        fetchDevice(id: id)
     }
-    
+
     func fetchDevice(id: NSManagedObjectID) -> Device? {
-        let object = self.dataStack.mainContext.object(with: id)
-        
-        if let device: Device = object as? Device {
-            print("Fetched device with ID = \(id). The name of this device is '\(device.name)'")
-            return device
-        }
-        return nil
+        let object = dataStack.mainContext.object(with: id)
+        return object as? Device
     }
-    
-    // returns device if there are unsynced devices, else nil
+
+    /// Returns one unsynced device, or nil.
     func fetchUnsyncedDevices() -> Device? {
-        return fetchDevice(id: nil)
+        fetchDevice(id: nil)
     }
-    
+
     func fetchDevice(id: Int16?) -> Device? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Device")
-        let sortDescriptor = NSSortDescriptor(key: "id", ascending: true)
-        
-        var predicate:NSPredicate!
-        if let _ = id {
-            // fetching device by id to check if exists
-            predicate = NSPredicate(format: "id == \(id!)", argumentArray: nil)
-        } else {
-            // fetching unsynced devices
-            predicate = NSPredicate(format: "isSynced == \(false)", argumentArray: nil)
-        }
-        
-        // Assign fetch request properties
-        fetchRequest.predicate = predicate
-        fetchRequest.sortDescriptors = [sortDescriptor]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
         fetchRequest.fetchBatchSize = 1
         fetchRequest.fetchLimit = 1
-        
-        // Handle results
-        let fetchedResult = try? self.dataStack.mainContext.fetch(fetchRequest)
-        
-        if fetchedResult?.count == 0 {
+
+        if let id = id {
+            fetchRequest.predicate = NSPredicate(format: "id == %d", id)
+        } else {
+            fetchRequest.predicate = NSPredicate(format: "isSynced == NO")
+        }
+
+        do {
+            let result = try dataStack.mainContext.fetch(fetchRequest)
+            return result.first as? Device
+        } catch {
+            print("PersistenceService fetchDevice error: \(error)")
             return nil
         }
-        
-        if let fetchedDevice = fetchedResult?[0] as? Device {
-            print("Fetched device with id = \(fetchedDevice.id), isSynced = \(fetchedDevice.isSynced), name '\(fetchedDevice.name)'")
-            return fetchedDevice
-        }
-        
-        return nil
     }
-    
+
     func deleteDevice(id: NSManagedObjectID) {
-        let object = self.dataStack.mainContext.object(with: id)
-        self.dataStack.mainContext.delete(object)
-        try! self.dataStack.mainContext.save()
+        let object = dataStack.mainContext.object(with: id)
+        dataStack.mainContext.delete(object)
+        do {
+            try dataStack.mainContext.save()
+        } catch {
+            print("PersistenceService deleteDevice save error: \(error)")
+        }
     }
-    
-    
-    // MARK: User Defaults methods
-    func write(array: [Any], name: String) {
-        let defaults = UserDefaults.standard
-        defaults.set(array, forKey: name)
+
+    // MARK: - UserDefaults (Int16 arrays)
+
+    func write(array: [Int16], name: String) {
+        UserDefaults.standard.set(array.map { Int($0) }, forKey: name)
     }
-    
+
+    func readInt16Array(name: String) -> [Int16] {
+        guard let raw = UserDefaults.standard.array(forKey: name) as? [Int] else {
+            return []
+        }
+        return raw.map { Int16($0) }
+    }
+
+    /// Generic read for backward compatibility; prefer readInt16Array for Int16 arrays.
     func read(name: String) -> [Any]? {
-        let defaults = UserDefaults.standard
-        return defaults.array(forKey: name)
+        UserDefaults.standard.array(forKey: name)
     }
-    
+
     func remove(key: String) {
-        let defaults = UserDefaults.standard
-        defaults.removeObject(forKey: key)
+        UserDefaults.standard.removeObject(forKey: key)
     }
-//    func clear() {
-//        let appDomain = Bundle.main.bundleIdentifier!
-//        UserDefaults.standard.removePersistentDomain(forName: appDomain)
-//    }
 }

@@ -1,6 +1,6 @@
 //
-//  AddDevice.swift
-//  JnJCCA
+//  AddDevicePage.swift
+//  TDM
 //
 //  Created by Hussian Ali Al-Amri on 11/1/16.
 //  Copyright © 2016 IM. All rights reserved.
@@ -9,81 +9,78 @@
 import UIKit
 import CoreData
 
-class AddDevicePage: UIViewController, UITextFieldDelegate {
-    @IBOutlet weak var deviceTextField: UITextField!
-    @IBOutlet weak var osTextField: UITextField!
-    @IBOutlet weak var manufacturerTextField: UITextField!
-    @IBOutlet weak var titleBar: UINavigationBar!
-    
-    // homePage cannot be nil
-    public var homePage:HomePage!
-    
+final class AddDevicePage: UIViewController, UITextFieldDelegate {
+
+    @IBOutlet private weak var deviceTextField: UITextField!
+    @IBOutlet private weak var osTextField: UITextField!
+    @IBOutlet private weak var manufacturerTextField: UITextField!
+    @IBOutlet private weak var titleBar: UINavigationBar!
+
+    weak var homePage: HomePage?
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // set the delegate for the textfield to implement the return functionality
-        self.deviceTextField.delegate = self
-        self.osTextField.delegate = self
-        self.manufacturerTextField.delegate = self
+        deviceTextField.delegate = self
+        osTextField.delegate = self
+        manufacturerTextField.delegate = self
     }
-    
+
     override func viewDidLayoutSubviews() {
-        titleBar.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: titleBar.frame.size.height + UIApplication.shared.statusBarFrame.size.height)
-        deviceTextField.frame = CGRect(x: deviceTextField.frame.origin.x, y: deviceTextField.frame.origin.y + UIApplication.shared.statusBarFrame.size.height, width: deviceTextField.frame.size.width, height: deviceTextField.frame.size.height)
-        osTextField.frame = CGRect(x: osTextField.frame.origin.x, y: osTextField.frame.origin.y + UIApplication.shared.statusBarFrame.size.height, width: osTextField.frame.size.width, height: osTextField.frame.size.height)
-        manufacturerTextField.frame = CGRect(x: manufacturerTextField.frame.origin.x, y: manufacturerTextField.frame.origin.y + UIApplication.shared.statusBarFrame.size.height, width: manufacturerTextField.frame.size.width, height: manufacturerTextField.frame.size.height)
+        super.viewDidLayoutSubviews()
+        let topInset = view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
+        titleBar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: titleBar.frame.height + topInset)
+        [deviceTextField, osTextField, manufacturerTextField].forEach { textField in
+            guard let textField = textField else { return }
+            textField.frame = CGRect(
+                x: textField.frame.origin.x,
+                y: textField.frame.origin.y + topInset,
+                width: textField.frame.width,
+                height: textField.frame.height
+            )
+        }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == deviceTextField {
-            osTextField.becomeFirstResponder()
-        } else if textField == osTextField {
-            manufacturerTextField.becomeFirstResponder()
-        } else {
-            textField.resignFirstResponder()
+        switch textField {
+        case deviceTextField: osTextField?.becomeFirstResponder()
+        case osTextField: manufacturerTextField?.becomeFirstResponder()
+        default: textField.resignFirstResponder()
         }
         return true
     }
-    
 
-    @IBAction func cancel(_ sender: Any) {
-        if (deviceTextField.text?.characters.count)! > 0 || (osTextField.text?.characters.count)! > 0 || (manufacturerTextField.text?.characters.count)! > 0 {
-            alert(title: "Warning", message: "Are you sure you want to cancel?", action1: "Yes", action2: "No")
+    @IBAction private func cancel(_ sender: Any) {
+        let hasContent = [deviceTextField, osTextField, manufacturerTextField]
+            .contains { !($0?.text ?? "").isEmpty }
+        if hasContent {
+            showAlert(title: "Warning", message: "Are you sure you want to cancel?", action1: "Yes", action2: "No", dismissOnFirst: true)
         } else {
-            dismiss(animated: true, completion: nil)
+            dismiss(animated: true)
         }
     }
-    
-    @IBAction func save(_ sender: Any) {
-        if (deviceTextField.text?.characters.count)! == 0 || (osTextField.text?.characters.count)! == 0 || (manufacturerTextField.text?.characters.count)! == 0 {
-            alert(title: "Error", message: "Please fill all the fields", action1: nil, action2: "OK")
+
+    @IBAction private func save(_ sender: Any) {
+        let name = deviceTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let os = osTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let manufacturer = manufacturerTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        if name.isEmpty || os.isEmpty || manufacturer.isEmpty {
+            showAlert(title: "Error", message: "Please fill all the fields", action1: nil, action2: "OK", dismissOnFirst: false)
         } else {
-            dismiss(animated: true, completion: {
-                MainController.shared.addDevice(name: self.deviceTextField.text!, os: self.osTextField.text!, manufacturer: self.manufacturerTextField.text!)
-                // refresh Home Page
-                self.homePage.refresh()
+            dismiss(animated: true) { [weak self] in
+                MainController.shared.addDevice(name: name, os: os, manufacturer: manufacturer)
+                self?.homePage?.refresh()
+            }
+        }
+    }
+
+    private func showAlert(title: String, message: String, action1: String?, action2: String, dismissOnFirst: Bool) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        if let action1 = action1 {
+            alert.addAction(UIAlertAction(title: action1, style: .cancel) { [weak self] _ in
+                if dismissOnFirst { self?.dismiss(animated: true) }
             })
         }
-    }
-    
-    func alert(title:String, message:String, action1: String?, action2: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        
-        if let _ = action1 {
-            alert.addAction(UIAlertAction(title: action1!, style: .cancel, handler: { (_) in
-                self.dismiss(animated: true, completion: nil)
-            }))
-        }
-
-        alert.addAction(UIAlertAction(title: action2, style: .default, handler: { (_) in
-            return
-        }))
-        
-        present(alert, animated: true, completion: nil)
+        alert.addAction(UIAlertAction(title: action2, style: .default))
+        present(alert, animated: true)
     }
 }

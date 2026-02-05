@@ -1,6 +1,6 @@
 //
-//  JnJCCATests.swift
-//  JnJCCATests
+//  TDMTests.swift
+//  TDMTests
 //
 //  Created by Hussian Ali Al-Amri on 11/9/16.
 //  Copyright © 2016 IM. All rights reserved.
@@ -8,97 +8,80 @@
 
 import XCTest
 
-class JnJCCATests: XCTestCase {
-    
+final class TDMTests: XCTestCase {
+
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
     }
-    
+
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
+
     func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        // Example functional test case.
     }
-    
+
     func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+        measure {
+            // Performance test.
         }
     }
-    
+
     func testAdd() {
-        let addExpectation = expectation(description: "Add")
-        WebService.shared.addDevice(name: "iPhone 3G", os: "iOS 2", manufacturer: "Apple", completion: { string in
-            XCTAssertNotNil(string, "Success")
-            addExpectation.fulfill()
-        })
-        waitForExpectations(timeout: 10.0, handler: nil)
+        let expectation = expectation(description: "Add")
+        WebService.shared.addDevice(name: "iPhone 3G", os: "iOS 2", manufacturer: "Apple") { result in
+            XCTAssertNotNil(result)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 10)
     }
-    
+
     func testDelete() {
-        let deleteExpectation = expectation(description: "Delete")
-        WebService.shared.deleteDevice(id: Int16(1), completion: { string in
-            XCTAssertNotNil(string, "Success")
-            deleteExpectation.fulfill()
-        })
-        waitForExpectations(timeout: 10.0, handler: nil)
+        let expectation = expectation(description: "Delete")
+        WebService.shared.deleteDevice(id: 1) { result in
+            XCTAssertNotNil(result)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 10)
     }
-    
+
     func testUnsyncedDeletes() {
-        // fake delete some devices
-        MainController.shared.writeUnsyncedDeletes(id: 2)   // 1
-        MainController.shared.writeUnsyncedDeletes(id: 3)   // 2
-        // unsyncedDeletes cannot be nil
+        MainController.shared.writeUnsyncedDeletes(id: 2)
+        MainController.shared.writeUnsyncedDeletes(id: 3)
         XCTAssertNotNil(PersistenceService.shared.read(name: "UnsyncedDeletes"))
-        
-        // unsynced devices count should be two
-        var unsyncedDeletes = PersistenceService.shared.read(name: "UnsyncedDeletes")?.count
-        XCTAssertEqual(unsyncedDeletes, 2)
-        
-        // perform sync and check number of synced and unsynced (connection might have dropped during sync)
+
+        var unsyncedCount = PersistenceService.shared.read(name: "UnsyncedDeletes")?.count
+        XCTAssertEqual(unsyncedCount, 2)
+
         let syncedDeletes = MainController.shared.syncOfflineDeletes()
-        unsyncedDeletes = PersistenceService.shared.read(name: "UnsyncedDeletes")?.count ?? 0
-        XCTAssertEqual(syncedDeletes, 2 - unsyncedDeletes!)
+        unsyncedCount = PersistenceService.shared.read(name: "UnsyncedDeletes")?.count ?? 0
+        XCTAssertEqual(syncedDeletes, 2 - unsyncedCount)
     }
-    
+
     func testUnsyncedUpdatesAndDeletes() {
-        // fake update some devices
-        MainController.shared.writeUnsyncedUpdates(id: 2)   // 1
-        MainController.shared.writeUnsyncedUpdates(id: 3)   // 2
-        MainController.shared.writeUnsyncedUpdates(id: 0)   // 3
-        MainController.shared.writeUnsyncedUpdates(id: 1)   // 4
-        MainController.shared.writeUnsyncedUpdates(id: 4)   // 5
-        // unsyncedDeletes cannot be nil
+        MainController.shared.writeUnsyncedUpdates(id: 2)
+        MainController.shared.writeUnsyncedUpdates(id: 3)
+        MainController.shared.writeUnsyncedUpdates(id: 0)
+        MainController.shared.writeUnsyncedUpdates(id: 1)
+        MainController.shared.writeUnsyncedUpdates(id: 4)
         XCTAssertNotNil(PersistenceService.shared.read(name: "UnsyncedUpdates"))
-        
-        // unsynced updates count should be five
-        var unsyncedUpdates = PersistenceService.shared.read(name: "UnsyncedUpdates")?.count
-        XCTAssertEqual(unsyncedUpdates, 5)
-        
-        // what if some were deleted?
-        // fake delete some devices
-        MainController.shared.writeUnsyncedDeletes(id: 2)   // 1
-        MainController.shared.writeUnsyncedDeletes(id: 3)   // 2
-        // unsyncedDeletes cannot be nil
+
+        var unsyncedUpdatesCount = PersistenceService.shared.read(name: "UnsyncedUpdates")?.count
+        XCTAssertEqual(unsyncedUpdatesCount, 5)
+
+        MainController.shared.writeUnsyncedDeletes(id: 2)
+        MainController.shared.writeUnsyncedDeletes(id: 3)
         XCTAssertNotNil(PersistenceService.shared.read(name: "UnsyncedDeletes"))
-        
-        // unsynced deletes count should be two
-        let unsyncedDeletes = PersistenceService.shared.read(name: "UnsyncedDeletes")?.count
-        XCTAssertEqual(unsyncedDeletes, 2)
-        
-        // unsynced updates count should be three
-        unsyncedUpdates = PersistenceService.shared.read(name: "UnsyncedUpdates")?.count
-        XCTAssertEqual(unsyncedUpdates, 3)
-        
-        // perform sync and check number of synced and unsynced (connection might have dropped during sync)
+
+        let unsyncedDeletesCount = PersistenceService.shared.read(name: "UnsyncedDeletes")?.count
+        XCTAssertEqual(unsyncedDeletesCount, 2)
+
+        unsyncedUpdatesCount = PersistenceService.shared.read(name: "UnsyncedUpdates")?.count
+        XCTAssertEqual(unsyncedUpdatesCount, 3)
+
         let syncedUpdates = MainController.shared.syncOfflineUpdates()
-        unsyncedUpdates = PersistenceService.shared.read(name: "UnsyncedUpdates")?.count ?? 0
-        XCTAssertEqual(syncedUpdates, 3 - unsyncedUpdates!)
+        unsyncedUpdatesCount = PersistenceService.shared.read(name: "UnsyncedUpdates")?.count ?? 0
+        XCTAssertEqual(syncedUpdates, 3 - unsyncedUpdatesCount)
     }
 }

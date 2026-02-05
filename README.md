@@ -1,5 +1,10 @@
 # README #
 
+## Requirements
+
+- **Xcode**: 15.x or later (Swift 5, iOS 13)
+- **CocoaPods**: Run `pod install` after cloning, then open `TDM.xcworkspace`.
+
 # Change Log #
 19:00 Thursday, November 10, 2026:
 
@@ -21,6 +26,13 @@ Rationale:
 
 The purpose of keeping track of all updates and deletions whether synced or not, is to get around an issue where if a device has been updated (checked in/out) and then deleted, deletion will not take affect until the app is restarted. Keeping track of all updates and deletions, the deleted devices can be removed from the tableview even if the deletion hasn't taken effect in Core Data. I initially used the same array to keep track of unsynced changes, resulting in multiple deletions in some cases, since the array was written to whether the app was offline or online, and once it went online it will redo the deletions, similarly for updates.
 
+
+Swift 5 / iOS 13 update (2025):
+
+- Swift 5.0, iOS 13.0 deployment target
+- Alamofire 5.x API (AF.request, Result-based responses)
+- Modern Swift: `@main`, `UITableViewCell.EditingStyle`, block-based `Timer`, `weak`/`[weak self]`, type-safe `readInt16Array`, `do`/`try`/`catch` for Core Data saves
+- Build settings: C++17, gnu11, Swift 5
 
 22:00 Saturday, November 05, 2016:
 
